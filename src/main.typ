@@ -34,6 +34,7 @@
   title: none,
   authors: (), 
   abstract: [],
+  parts: false,
   doc,
 ) = {
 
@@ -84,7 +85,7 @@
           ]
         }
       }
-  )
+  ) // set page
 
 
   set text(
@@ -99,16 +100,9 @@
   )
 
   show strong: set text(weight: 200)
-  show heading: set text(weight: 400)
-
-  show heading.where(level: 1): set text(size: 14pt)
-  show heading.where(level: 2): set text(size: 14pt)
-  show heading.where(level: 3): set text(size: 10pt)
-  show heading.where(level: 4): set text(size: 8pt)
 
 
-  // Maybe font: "Noto Sans Math" in the future.
-  show math.equation: set text(size: 9pt)
+  show math.equation: set text(size: 9pt, weight: 100)
   /*
   show math.equation: it => {
     if it.body.func() == math.sans[].func(){
@@ -119,11 +113,28 @@
   }
   */
 
+  // TODO show math.sherif: set text(font: "Noto Sans")
 
   show raw: set text(
     font: "JetBrains Mono", // font: "JetBrainsMonoNL NF",
     size: 7pt,
-    )
+  )
+
+
+
+
+
+  // Headings
+  show heading: set text(weight: 400)
+
+  show heading.where(level: 1): set text(size: 14pt)
+  show heading.where(level: 2): set text(size: 14pt)
+  show heading.where(level: 3): set text(size: 10pt)
+  show heading.where(level: 4): set text(size: 8pt)
+
+
+
+
 
   show raw.where(block: true): block.with(
     fill: luma(40),
