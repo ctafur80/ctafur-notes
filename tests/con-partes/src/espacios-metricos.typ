@@ -280,7 +280,7 @@ La *Definición. 1.12* en realidad está definiendo dos cosas: (i) segmento y
 $b$", también se le suele llamar "segmento $a$ $b$".
 
 Por cierto, se podría pensar en el concepto de _segmento_ como en una
-generalización del de _intervalo_ de $(bb(R)), +, dot.op$.
+generalización del de _intervalo_ de $(bb(R), +, dot.op)$.
 
 En la definición de _puntos alineados_, se podría explicar también que esto
 está relacionado con el concepto de _recta_, que se define en el capítulo

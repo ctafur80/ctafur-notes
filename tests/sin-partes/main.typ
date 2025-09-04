@@ -11,6 +11,7 @@
   sheet: "tablet",
   lang: "es",
   title: [Apuntes de Geometría Básica],
+  parts: false,
   authors: (
     (
       name: "Carlos E. Tafur Egido",
@@ -64,13 +65,11 @@
 
 
 = Capítulo 1. Espacios métricos
-<ch-espacios-metricos>
 #include("src/espacios-metricos.typ")
 
 
 
 = Capítulo 2. Axiomas del plano euclideo
-<ch-axiomas-plano-euclideo>
 #include("src/ax-plano-euclideo.typ")
 
 

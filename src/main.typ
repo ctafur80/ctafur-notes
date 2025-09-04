@@ -102,6 +102,12 @@
   show strong: set text(weight: 200)
 
 
+  show raw: set text(
+    font: "JetBrains Mono", // font: "JetBrainsMonoNL NF",
+    size: 7pt,
+  )
+
+
   show math.equation: set text(size: 9pt, weight: 100)
   /*
   show math.equation: it => {
@@ -113,12 +119,12 @@
   }
   */
 
-  // TODO show math.sherif: set text(font: "Noto Sans")
+  // Aún no se puede usar la siguiente. Creo que por un bug de la función
+  // `show()`.
+  // show math.text: set text(font: "Noto Sans", weight: 300, size: 7pt)
+  // show math.text: text.with(font: "Noto Sans")
 
-  show raw: set text(
-    font: "JetBrains Mono", // font: "JetBrainsMonoNL NF",
-    size: 7pt,
-  )
+
 
 
 
@@ -135,7 +141,7 @@
 
 
 
-
+  // Code block background.
   show raw.where(block: true): block.with(
     fill: luma(40),
     inset: 10pt,
@@ -169,8 +175,6 @@
         it
       }
   }
-
-  // show math.text: set text(font: "Noto Sans", weight: 300, size: 7pt)
 
 
   /*
@@ -231,9 +235,18 @@
 
 
 
+
+
+
+  let first_level = 2
+  if parts == true {
+    first_level = 1
+  }
+
+
   // Makes a page break before every depth-1 heading.
   show outline: set heading(supplement: [Outline])
-  show heading.where(depth: 1): it => {
+  show heading.where(depth: first_level): it => {
     if it.supplement != [Outline] {
       pagebreak(weak: true)
     }
