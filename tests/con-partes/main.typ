@@ -6,22 +6,16 @@
 
 
 
-// Filling the `templ-book-typ` template data.
+// Template data.
 #show: templ.with(
   sheet: "tablet",
   lang: "es",
   title: [Apuntes de Geometría Básica],
-  parts: true,
   authors: (
     (
       name: "Carlos E. Tafur Egido",
       affiliation: "Artos Institute",
       email: "tung@artos.edu",
-    ),
-    (
-      name: "Eugene Deklan",
-      affiliation: "Honduras State",
-      email: "e.deklan@hstate.hn",
     ),
   ),
   abstract: [
@@ -38,7 +32,6 @@
 // TODO When I put it in templ-book file it doesn't make any effect.
 // Updating the counters by sections
 #show heading.where(level: 1): it => {
-  // pagebreak()
   counter("proposition").update(0)
   counter("theorem").update(0)
   counter("example").update(0)
@@ -84,7 +77,6 @@
 
 
 
-// #set par(justify: false)
 #bibliography("referencias.yaml", style: "ieee")
 
 

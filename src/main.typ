@@ -1,28 +1,32 @@
 
 
 // Color themes.
-#let light_palette = (
+#let light-palette = (
   bg: rgb("fff"),
   fg: rgb("000"),
-  math_env_bg_from: rgb("ededf7"),
-  math_env_bg_to: rgb("f5f5e9"),
-  euclid_ax_env_from: rgb("faedf3"),
-  euclid_ax_env_to: rgb("f5f5e9"),
+  math_hl_env_bg: gradient.linear(rgb("ededf7"), rgb("f5f5e9")),
+  // math_env_bg_from: rgb("ededf7"),
+  // math_env_bg_to: rgb("f5f5e9"),
+  ax_env_bg: gradient.linear(rgb("faedf3"), rgb("f5f5e9")),
+  // ax_env_bg_from: rgb("faedf3"),
+  // ax_env_bg_to: rgb("f5f5e9"),
 )
 
-#let dark_palette = (
+#let dark-palette = (
   bg: rgb("1e1e1e"),
   fg: rgb("a89e9e"),
-  math_env_bg_from: rgb("2c2c3d"),
-  math_env_bg_to: rgb("3b3b30"),
-  euclid_ax_env_from: rgb("3d2c33"),
-  euclid_ax_env_to: rgb("3b3b30"),
+  math_hl_env_bg: gradient.linear(rgb("2c2c3d"), rgb("3b3b30")),
+  // math_env_bg_from: rgb("2c2c3d"),
+  // math_env_bg_to: rgb("3b3b30"),
+  ax_env_bg: gradient.linear(rgb("3d2c33"), rgb("3b3b30")),
+  // ax_env_bg_from: rgb("3d2c33"),
+  // ax_env_bg_to: rgb("3b3b30"),
 )
 
 
 // COLOR THEME SELECTION. <---------- !!!!!!!!!!!
 // #let palette = light_palette
-#let palette = dark_palette
+#let palette = dark-palette
 
 
 
@@ -34,7 +38,8 @@
   title: none,
   authors: (), 
   abstract: [],
-  parts: false,
+  // parts: false,
+  outline-depth: 4,
   doc,
 ) = {
 
@@ -71,7 +76,7 @@
           }
 
           let heading = headings.last()
-          let this_page = counter(page).display()
+          let this-page = counter(page).display()
 
           block[
             #text(style: "italic")[
@@ -80,7 +85,7 @@
               ---
               #heading.body
               #h(1fr)
-              #this_page
+              #this-page
             ]
           ]
         }
@@ -89,10 +94,16 @@
 
 
   set text(
+    // font: "Times New Roman",
+    // size: 8pt,
+    // weight: 100,
+    // tracking: 0.6pt,
+    //
     font: "Noto Sans",
     size: 8pt,
     weight: 300,
     tracking: 0.3pt,
+    //
     // font: "New Computer Modern",
     // tracking: 0.2pt,
     // size: 10pt,
@@ -108,6 +119,7 @@
   )
 
 
+  // Default math font: Computer Modern (CM), the same as in TeX.
   show math.equation: set text(size: 9pt, weight: 100)
   /*
   show math.equation: it => {
@@ -195,13 +207,16 @@
 
 
   // TODO Sigue mal. La centra.
-  show bibliography: set heading(level: 2)
+  // show bibliography: set heading(level: 2)
 
 
   // Title page
   set align(center+horizon)
-  text(weight: 400, size: 17pt, title)
+  text(weight: 400, size: 18pt, title)
 
+  v(2em)
+
+  // Authors parameter.
   let count = authors.len()
   let ncols = calc.min(count, 3)
   grid(
@@ -209,6 +224,8 @@
     row-gutter: 24pt,
     ..authors.map(author => [#author.name \ #author.affiliation \ #link("mailto:" + author.email)])
   )
+
+  v(3em)
 
   par(justify: false)[
     *Abstract* \
@@ -220,46 +237,27 @@
   // Table of contents
   pagebreak()
   set align(left+top)
-
-
   // show outline.entry.where(level: 1): it => {
   //   set text(it, size: 36pt)
   // }
   v(3cm)
-  outline(depth: 4)
+  outline(depth: outline-depth)
 
 
-
-  set footnote.entry(separator: line(length: 30% + 0pt, stroke: (thickness:
-    0.5pt, paint: palette.fg)))
-
-
-
-
-
-
-  let first_level = 2
-  if parts == true {
-    first_level = 1
-  }
 
 
   // Makes a page break before every depth-1 heading.
   show outline: set heading(supplement: [Outline])
-  show heading.where(depth: first_level): it => {
+  show heading.where(depth: 1): it => {
     if it.supplement != [Outline] {
       pagebreak(weak: true)
     }
-    align(center+horizon)[#it]
-    pagebreak(weak: false)
-    v(3cm)
+    v(4cm)
+    it
+    v(1.3em)
   }
 
-
   show heading.where(depth: 2): it => {
-    if it.supplement != [Outline] {
-      pagebreak(weak: true)
-    }
     v(2cm)
     it
     v(1em)
@@ -278,11 +276,25 @@
 
 
 
+
+  set footnote.entry(separator: line(length: 30% + 0pt, stroke: (thickness:
+    0.5pt, paint: palette.fg)))
+
+
+
+
+
+
+
+
+
+
   set par(justify: true)
   doc
 }
 
 
+// Thematic pause.
 #let hrule = block[
   #v(15pt)
   #line(length: 100%, stroke: (paint: palette.fg, thickness: 0.5pt, dash: "dashed"))
@@ -295,190 +307,115 @@
 // ----------------------------------------------------------------------------------------
 
 
-
-// Proposition
-#let proposition(body, number: none, title: none) = {
-  let display_number = if number != none { " " + number } else { "" }
-  let display_title = if title != none { " (" + title + ")" } else { "" }
-  set enum(numbering: "i.")
-
-  block(
-    // breakable: false,
-    width: 100%,
-    fill: gradient.linear(palette.math_env_bg_from, palette.math_env_bg_to),
-    inset: 8pt,
-    radius: 4pt,
-  )[
-    #text(weight: 500, style: "italic")[Proposición#display_number#display_title.]
-    #body
-  ]
-}
-
-
-
-// Theorem
-#let theorem(body, number: none, title: none) = {
-  let display_number = if number != none { " " + number } else { "" }
-  let display_title = if title != none { " (" + title + ")" } else { "" }
-  set enum(numbering: "i.")
-
-  block(
-    // breakable: false,
-    width: 100%,
-    fill: gradient.linear(palette.math_env_bg_from, palette.math_env_bg_to),
-    inset: 8pt,
-    radius: 4pt,
-  )[
-    #text(weight: 500, style: "italic")[Teorema#display_number#display_title.]
-    #body
-  ]
-}
+// Data for the different kinds of maths highlighted environments.
+#let maths-hl-envs-data = (
+  definition: (
+    title: "definición",
+    bg: palette.math_hl_env_bg,
+    numbering: "i.",
+  ),
+  axiom: (
+    title: "axioma",
+    bg: palette.ax_env_bg,
+    numbering: "i.",
+  ),
+  theorem: (
+    title: "teorema",
+    bg: palette.math_hl_env_bg,
+    numbering: "i.",
+  ),
+  proposition: (
+    title: "proposición",
+    bg: palette.math_hl_env_bg,
+    numbering: "i.",
+  ),
+  lemma: (
+    title: "lema",
+    bg: palette.math_hl_env_bg,
+    numbering: "i.",
+  ),
+  corollary: (
+    title: "corolario",
+    bg: palette.math_hl_env_bg,
+    numbering: "i.",
+  )
+)
 
 
 
+// Generic maths highlighted environments function.
+#let maths-hl-envs(kind, body, number: none, title: none, numbering: none, bg: none) = {
 
-// Axiom
-#let axiom(body, number: none, title: none) = {
-  let display_number = if number != none { " " + number } else { "" }
-  let display_title = if title != none { " (" + title + ")" } else { "" }
-  set enum(numbering: "i.")
-
-  block(
-    // breakable: false,
-    width: 100%,
-    fill: gradient.linear(palette.math_env_bg_from, palette.math_env_bg_to),
-    inset: 8pt,
-    radius: 4pt,
-  )[
-    #text(weight: 500, style: "italic")[Axioma#display_number#display_title.]
-    #body
-  ]
-}
-
-
-
-// Euclid axiom
-#let euclid_ax(title, it) = {
-  counter("euclid").step()
-
-  let the_title = title
-  if the_title != [] {
-    the_title = [ (#the_title)]
+  let capitalize(text) = {
+    if text == "" { "" } else {
+      upper(text.slice(0, 1)) + text.slice(1,)
+    }
   }
 
-  let number = context counter("euclid").display()
-  set enum(numbering: "i.")
+  let cfg = maths-hl-envs-data.at(kind)
+
+  let numbering-style = if numbering != none { numbering } else { cfg.numbering }
+  let fill-style = if bg != none { bg } else { cfg.bg }
+
+  let displayed-number = if number != none { " " + number } else { "" }
+  let displayed-title = if title != none { " (" + title + ")" } else { "" }
+
+  // aplicar estilo de enumeración (si eso es lo que quieres)
+  set enum(numbering: numbering-style)
 
   block(
-    // breakable: false,
     width: 100%,
-    fill: gradient.linear(palette.euclid_ax_env_from, palette.euclid_ax_env_to),
+    fill: fill-style,
     inset: 8pt,
     radius: 4pt,
   )[
-    #text(weight: 500, style: "italic")[Axioma P#number de Euclides#the_title.]
-    #text[#it]
-  ]
-}
-
-
-
-
-// Definition
-#let definition(body, number: none, title: none) = {
-  let display_number = if number != none { " " + number } else { "" }
-  let display_title = if title != none { " (" + title + ")" } else { "" }
-  set enum(numbering: "i.")
-
-  block(
-    // breakable: false,
-    width: 100%,
-    fill: gradient.linear(palette.math_env_bg_from, palette.math_env_bg_to),
-    inset: 8pt,
-    radius: 4pt,
-  )[
-    #text(weight: 500, style: "italic")[Definición#display_number#display_title.]
+    #text[*_#capitalize(cfg.title)#displayed-number#displayed-title._*]
     #body
   ]
 }
 
 
+// Highlighted maths environments.
 
+// Helper/wrapper function.
+#let make-math-env = kind => (body, number: none, title: none, numbering: none, bg: none) => maths-hl-envs(kind, body, number: number, title: title, numbering: numbering, bg: bg)
 
-// Lemma
-#let lemma(body, number: none, title: none) = {
-  let display_number = if number != none { " " + number } else { "" }
-  let display_title = if title != none { " (" + title + ")" } else { "" }
-  set enum(numbering: "i.")
-
-  block(
-    // breakable: false,
-    width: 100%,
-    fill: gradient.linear(palette.math_env_bg_from, palette.math_env_bg_to),
-    inset: 8pt,
-    radius: 4pt,
-  )[
-    #text(weight: 500, style: "italic")[Lema#display_number#display_title.]
-    #body
-  ]
-}
-
-
-
-
-// Corollary
-#let corollary(body, number: none, title: none) = {
-  let display_number = if number != none { " " + number } else { "" }
-  let display_title = if title != none { " (" + title + ")" } else { "" }
-  set enum(numbering: "i.")
-
-  block(
-    // breakable: false,
-    width: 100%,
-    fill: gradient.linear(palette.math_env_bg_from, palette.math_env_bg_to),
-    inset: 8pt,
-    radius: 4pt,
-  )[
-    #text(weight: 500, style: "italic")[Corolario#display_number#display_title.]
-    #body
-  ]
-}
-
+#let theorem = make-math-env("theorem")
+#let definition = make-math-env("definition")
+#let axiom = make-math-env("axiom")
+#let proposition = make-math-env("proposition")
+#let lemma = make-math-env("lemma")
+#let corollary = make-math-env("corollary")
 
 
 
 // Example
-#let example(body, number: none, title: none) = {
-  let display_number = if number != none { " " + number } else { "" }
-  let display_title = if title != none { " (" + title + ")" } else { "" }
+#let exmpl(body, number: none, title: none) = {
+  let displayed-number = if number != none { " " + number } else { "" }
+  let displayed-title = if title != none { " (" + title + ")" } else { "" }
 
   block[
-    #text(weight: 500, style: "italic")[Ejemplo#display_number#display_title.]
+    #text[*_Ejemplo#displayed-number#displayed-title._*]
     #body
     #h(1fr)
     $triangle.filled.br$
   ]
 }
-
-
-
 
 // Exercise
-#let exercise(body, number: none, title: none) = {
-  let display_number = if number != none { " " + number } else { "" }
-  let display_title = if title != none { " (" + title + ")" } else { "" }
+#let exr(body, number: none, title: none) = {
+  let displayed-number = if number != none { " " + number } else { "" }
+  let displayed-title = if title != none { " (" + title + ")" } else { "" }
 
   block[
-    #text(weight: 500, style: "italic")[Ejercicio#display_number#display_title.]
+    #text[*_Ejercicio#displayed-number#displayed-title._*]
     #body
     #h(1fr)
     $triangle.filled.br$
   ]
 }
 
-
-
-// Remark.
+// Remark
 #let remark(it) = {
   block[#text[*_Observación_*. #it #h(1fr) $triangle.filled.br$]]
 }
@@ -498,7 +435,6 @@
 
 // TODO Put a reference to a math environment such as a theorem,
 // proposition, etc.
-// Proof.
 #let proof(it) = {
   block[#text[*_Demostración_*~--- #it#h(1fr)$qed$]]
 }
@@ -517,6 +453,12 @@
 }
 
 
+
+#let note() = {
+
+}
+
+
 #let diversion(it) = {
   block(
     fill: luma(55),
@@ -527,8 +469,12 @@
 
 
 
-
-
-
+// TODO Entorno de tipo enum para los pasos en una demostración. Vea
+// <https://forum.typst.app/t/can-you-make-a-horizontal-enum-list/877/3>.
+/*
+#let proof_steps(it) = enum(
+  body-indent: 0em, #it
+)
+*/
 
 

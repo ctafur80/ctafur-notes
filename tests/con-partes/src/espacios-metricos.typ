@@ -31,12 +31,12 @@ mismo como ejercicios.
 En lo que respecta a la *Definición 1.1 (de Métrica)*, me gusta más la
 siguiente, ya que me parece más "elegante".
 
-#definition(title: "Métrica o Distancia")[
+#definition(number: "1.1", title: "Métrica o Distancia")[
   Dado un conjunto $bold(P)$ no vacío, una _métrica_ o _distancia_ es toda
   aplicación $d: bold(P) times bold(P) arrow.r.long bb(R)^+ union {0}$ en la
   que para cualesquiera $x, y, z in bold(P)$ se cumple:
 
-  + $[d (x, y) = 0] arrow.l.r.double [x = y]$.
+  + $[d (x, y) = 0] arrow.l.r.double (x = y)$.
   + $d (x, y) = d (y, x)$. (Simetría.)
   + $d (x, y) lt.eq d(x, z) + d(z, y)$. (Desigualdad triangular.)
 ] <def-metrica>
@@ -47,9 +47,25 @@ resulta más cómoda si se desea comprobar punto por punto, en los ejercicios,
 demostraciones, etc.
 
 Lo único es que, con la mía, hay que tener cuidado para ciertas cosas. Por
-ejemplo, para demostrar el paso que si $d (x, y) = 0$ entonces $x = y$.
+ejemplo, para demostrar el paso que si $d(x, y) = 0$ entonces $x = y$.
 Conviene hacerlo con el condicional contrarrecíproco, que sería lo mismo que
 en la definición del libro.
+
+#axiom(title: "P3 de Euclides (de la Regla Graduada)")[
+  En $(bold(P), d)$, para toda recta $r subset.eq bold(P)$ existe una
+  isometría $gamma: (r, d) arrow.r.long (RR, d')$ siendo $d'$ la distancia
+  definida del modo siguiente, para cualesquiera $x, y in RR$,
+
+  $ d'(x, y) = |x - y| $
+]
+
+Lo único es que, con la mía, hay que tener cuidado para ciertas cosas. Por
+ejemplo, para demostrar el paso que si $d(x, y) = 0$ entonces $x = y$.
+Conviene hacerlo con el condicional contrarrecíproco, que sería lo mismo que
+en la definición del libro.
+
+
+
 
 
 
@@ -117,7 +133,7 @@ eq.not 0$ y, por tanto, un $(x_i - y_i)^2 > 0$. Por tanto, en esos tres
 casos, se tiene que $d_E (x, y) > 0$.
 */
 
-Punto 2.
+*Punto 2*.
 
 $ d_E (x, y)
   &= sqrt((x_1 - y_1)^2 + (x_2 - y_2)^2) \
@@ -221,6 +237,11 @@ En la *Definición 1.8*, también se puede usar una notación más explícita, a
 igual que sucede con lo que dijimos antes sobre la definición de
 _isometría_. En este caso, sería '$"Isom"(M, delta)$'.
 
+#proof[
+  Esta es la demostración de la *Observación 2.3*, que es bastante relevante
+  (quizás debería haberse enunciado como un teorema).
+]
+
 
 En cuanto a las propiedades presentadas al final de la página, las dos
 primeras son casos particulares del Teorema 1.7. Por su parte, la
@@ -322,7 +343,7 @@ cierta relación con algo que se verá en el capítulo dedicado a las
 isometrías. El apartado que me parece más difícil de comprender es el D.
 Pero primero haré una aclaración sobre el C.
 
-Punto C. Con las condiciones del problema hasta este apartado, se llega
+*Punto C*. Con las condiciones del problema hasta este apartado, se llega
 fácilmente a las igualdades siguientes:
 
 $ |g(x) - g(a)| &= |x - a| \
@@ -346,7 +367,7 @@ A partir de aquí, se puede hacer la manipulación que se muestra en el texto.
 Advierta que en algún punto se hacen las sustituciones $g(a) = a$ y $g(b) =
 b$.
 
-Punto D. Lo primero que hace es demostrar un resultado general para este
+*Punto D*. Lo primero que hace es demostrar un resultado general para este
 espacio métrico, $(bb(R), d_(bb(R)))$. Concretamente, que si dos de sus
 isometrías cumplen
 
