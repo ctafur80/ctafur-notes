@@ -31,7 +31,7 @@ mismo como ejercicios.
 En lo que respecta a la *Definición 1.1 (de Métrica)*, me gusta más la
 siguiente, ya que me parece más "elegante".
 
-#definition(number: "1.1", title: "Métrica o Distancia")[
+#definition(number: "1.1", title: "Métrica o Distancia", numbering: "1.")[
   Dado un conjunto $bold(P)$ no vacío, una _métrica_ o _distancia_ es toda
   aplicación $d: bold(P) times bold(P) arrow.r.long bb(R)^+ union {0}$ en la
   que para cualesquiera $x, y, z in bold(P)$ se cumple:
@@ -63,6 +63,80 @@ Lo único es que, con la mía, hay que tener cuidado para ciertas cosas. Por
 ejemplo, para demostrar el paso que si $d(x, y) = 0$ entonces $x = y$.
 Conviene hacerlo con el condicional contrarrecíproco, que sería lo mismo que
 en la definición del libro.
+
+#exercise(number: "2.2")[
+  Esto es simplemente un ejercicio.
+
+  El *Ejemplo 1.2* es lo mismo que el *Ejercicio 1.2* (pág. 17 con la
+  solución en la pág. 256). Se obvian los primeros puntos de la Definición
+  1.1 (de Métrica), pero aquí los presentamos para que esté más completo.
+  (Usaremos la Definición 1.1 (de Métrica) presentada en estos apuntes.)
+
+  Advierta que las coordenadas que se usan en este ejercicio son distintas a
+  las que está acostumbrado de otras asignaturas donde se toca la geometría
+  (euclidiana) analítica. En estas lo normal es usar coordenadas del tipo
+
+  $ u = (x_1, y_1), quad v = (x_2, y_2) $
+
+  en lugar de
+
+  $ x = (x_1, x_2), quad y = (y_1, y_2) $
+
+  Lo primero será ver que $bb(R)^2$ es no vacío, cosa que sabemos
+  perfectamente, por tratarse de un conjunto que conocemos. Por ejemplo,
+  contiene al elemento $(0, 0)$.
+
+  Luego, se debe comprobar que el rango de la función $d_E$ se encuentra en
+  $bb(R)^+ union {0}$. Esto es fácil de ver por la fórmula de la función
+  pues todo lo que esté elevado al cuadrado producirá un valor mayor o igual
+  que $0$. La suma de esos valores también lo será y, a su vez, la raíz
+  cuadrada de esa suma.
+
+  Del punto 1, es trivial ver que si $x = y$ entonces $d_E (x, y) = 0$, con
+  una argumentación similar a la anterior. Más complicado es el otro
+  condicional, es decir, que de $d_E (x, y) = 0$ se deduce que $x = y$. Es
+  más cómodo hacerlo mediante su condicional contrarrecíproco, es decir, que
+  de $x eq.not y$ se deduce que $d_E (x, y) eq.not 0$. Habría que ver los
+  tres casos posibles en los que se da el antecedente, es decir, $x eq.not
+  y$:
+]
+
+#proof(ref: "Teorema 2.2 (de Pitágoras)")[
+  Esto es simplemente un ejercicio.
+
+  El *Ejemplo 1.2* es lo mismo que el *Ejercicio 1.2* (pág. 17 con la
+  solución en la pág. 256). Se obvian los primeros puntos de la Definición
+  1.1 (de Métrica), pero aquí los presentamos para que esté más completo.
+  (Usaremos la Definición 1.1 (de Métrica) presentada en estos apuntes.)
+
+  Advierta que las coordenadas que se usan en este ejercicio son distintas a
+  las que está acostumbrado de otras asignaturas donde se toca la geometría
+  (euclidiana) analítica. En estas lo normal es usar coordenadas del tipo
+
+  $ u = (x_1, y_1), quad v = (x_2, y_2) $
+
+  en lugar de
+
+  $ x = (x_1, x_2), quad y = (y_1, y_2) $
+
+  Lo primero será ver que $bb(R)^2$ es no vacío, cosa que sabemos
+  perfectamente, por tratarse de un conjunto que conocemos. Por ejemplo,
+  contiene al elemento $(0, 0)$.
+
+  Luego, se debe comprobar que el rango de la función $d_E$ se encuentra en
+  $bb(R)^+ union {0}$. Esto es fácil de ver por la fórmula de la función
+  pues todo lo que esté elevado al cuadrado producirá un valor mayor o igual
+  que $0$. La suma de esos valores también lo será y, a su vez, la raíz
+  cuadrada de esa suma.
+
+  Del punto 1, es trivial ver que si $x = y$ entonces $d_E (x, y) = 0$, con
+  una argumentación similar a la anterior. Más complicado es el otro
+  condicional, es decir, que de $d_E (x, y) = 0$ se deduce que $x = y$. Es
+  más cómodo hacerlo mediante su condicional contrarrecíproco, es decir, que
+  de $x eq.not y$ se deduce que $d_E (x, y) eq.not 0$. Habría que ver los
+  tres casos posibles en los que se da el antecedente, es decir, $x eq.not
+  y$:
+]
 
 
 

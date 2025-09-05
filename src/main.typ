@@ -1,7 +1,7 @@
 
 
 // Color themes.
-#let light-palette = (
+#let light_palette = (
   bg: rgb("fff"),
   fg: rgb("000"),
   math_hl_env_bg: gradient.linear(rgb("ededf7"), rgb("f5f5e9")),
@@ -12,7 +12,7 @@
   // ax_env_bg_to: rgb("f5f5e9"),
 )
 
-#let dark-palette = (
+#let dark_palette = (
   bg: rgb("1e1e1e"),
   fg: rgb("a89e9e"),
   math_hl_env_bg: gradient.linear(rgb("2c2c3d"), rgb("3b3b30")),
@@ -26,7 +26,7 @@
 
 // COLOR THEME SELECTION. <---------- !!!!!!!!!!!
 // #let palette = light_palette
-#let palette = dark-palette
+#let palette = dark_palette
 
 
 
@@ -39,7 +39,7 @@
   authors: (), 
   abstract: [],
   // parts: false,
-  outline-depth: 4,
+  outline_depth: 4,
   doc,
 ) = {
 
@@ -76,7 +76,7 @@
           }
 
           let heading = headings.last()
-          let this-page = counter(page).display()
+          let this_page = counter(page).display()
 
           block[
             #text(style: "italic")[
@@ -85,7 +85,7 @@
               ---
               #heading.body
               #h(1fr)
-              #this-page
+              #this_page
             ]
           ]
         }
@@ -241,7 +241,7 @@
   //   set text(it, size: 36pt)
   // }
   v(3cm)
-  outline(depth: outline-depth)
+  outline(depth: outline_depth)
 
 
 
@@ -307,8 +307,25 @@
 // ----------------------------------------------------------------------------------------
 
 
+
+// Helper: capitalize
+#let capitalize(text) = {
+  if text == "" { "" } else {
+    upper(text.slice(0, 1)) + text.slice(1,)
+  }
+}
+
+
+
+
+// TODO Unify highlighted environments and exercise-like environments, including remarks,
+// etc.
+
+
+
+
 // Data for the different kinds of maths highlighted environments.
-#let maths-hl-envs-data = (
+#let maths_hl_envs_data = (
   definition: (
     title: "definición",
     bg: palette.math_hl_env_bg,
@@ -344,32 +361,25 @@
 
 
 // Generic maths highlighted environments function.
-#let maths-hl-envs(kind, body, number: none, title: none, numbering: none, bg: none) = {
+#let maths_hl_envs(kind, body, number: none, title: none, numbering: none, bg: none) = {
 
-  let capitalize(text) = {
-    if text == "" { "" } else {
-      upper(text.slice(0, 1)) + text.slice(1,)
-    }
-  }
+  let cfg = maths_hl_envs_data.at(kind)
 
-  let cfg = maths-hl-envs-data.at(kind)
+  let numbering_style = if numbering != none { numbering } else { cfg.numbering }
+  let fill_style = if bg != none { bg } else { cfg.bg }
 
-  let numbering-style = if numbering != none { numbering } else { cfg.numbering }
-  let fill-style = if bg != none { bg } else { cfg.bg }
+  let displayed_number = if number != none { " " + number } else { "" }
+  let displayed_title = if title != none { " (" + title + ")" } else { "" }
 
-  let displayed-number = if number != none { " " + number } else { "" }
-  let displayed-title = if title != none { " (" + title + ")" } else { "" }
-
-  // aplicar estilo de enumeración (si eso es lo que quieres)
-  set enum(numbering: numbering-style)
+  set enum(numbering: numbering_style)
 
   block(
     width: 100%,
-    fill: fill-style,
+    fill: fill_style,
     inset: 8pt,
     radius: 4pt,
   )[
-    #text[*_#capitalize(cfg.title)#displayed-number#displayed-title._*]
+    #text[*_#capitalize(cfg.title)#displayed_number#displayed_title.---_* ]
     #body
   ]
 }
@@ -377,43 +387,97 @@
 
 // Highlighted maths environments.
 
-// Helper/wrapper function.
-#let make-math-env = kind => (body, number: none, title: none, numbering: none, bg: none) => maths-hl-envs(kind, body, number: number, title: title, numbering: numbering, bg: bg)
+// Wrapper function
+#let make_math_env = kind => {
+  (body, number: none, title: none, numbering: none, bg: none) => {
+    maths_hl_envs(kind, body, number: number, title: title, numbering: numbering, bg: bg)
+  }
+}
 
-#let theorem = make-math-env("theorem")
-#let definition = make-math-env("definition")
-#let axiom = make-math-env("axiom")
-#let proposition = make-math-env("proposition")
-#let lemma = make-math-env("lemma")
-#let corollary = make-math-env("corollary")
+#let definition = make_math_env("definition")
+#let axiom = make_math_env("axiom")
+#let theorem = make_math_env("theorem")
+#let proposition = make_math_env("proposition")
+#let lemma = make_math_env("lemma")
+#let corollary = make_math_env("corollary")
 
 
 
-// Example
-#let exmpl(body, number: none, title: none) = {
-  let displayed-number = if number != none { " " + number } else { "" }
-  let displayed-title = if title != none { " (" + title + ")" } else { "" }
+
+
+
+
+// Data of exercise-like environments.
+#let exr_like_envs_data = (
+  example: (
+    title: "ejemplo",
+    final_marker: $triangle.filled.br$,
+  ),
+  exercise: (
+    title: "ejercicio",
+    final_marker: $triangle.filled.br$,
+  ),
+  problem: (
+    title: "problema",
+    final_marker: $triangle.filled.br$,
+  ),
+)
+
+
+
+// Generic exercise-like environments function.
+#let exr_like_envs(kind, body, number: none, title: none, final_marker: none) = {
+  let cfg = exr_like_envs_data.at(kind)
+
+  // elegir marcador
+  let marker = if final_marker != none { final_marker } else { cfg.final_marker }
+
+  let displayed_number = if number != none { " " + number } else { "" }
+  let displayed_title = if title != none { " (" + title + ")" } else { "" }
 
   block[
-    #text[*_Ejemplo#displayed-number#displayed-title._*]
+    #text[*_#capitalize(cfg.title)#displayed_number#displayed_title.---_* ]
     #body
-    #h(1fr)
-    $triangle.filled.br$
+    // marcador al final
+    #h(1fr) #marker
   ]
 }
 
-// Exercise
-#let exr(body, number: none, title: none) = {
-  let displayed-number = if number != none { " " + number } else { "" }
-  let displayed-title = if title != none { " (" + title + ")" } else { "" }
+
+// Exercise-like environments (wrappers).
+#let make_exr_env = kind => {
+  (body, number: none, title: none, final_marker: none) => {
+    exr_like_envs(kind, body, number: number, title: title, final_marker: final_marker)
+  }
+}
+
+#let example = make_exr_env("example")
+#let exercise = make_exr_env("exercise")
+#let problem = make_exr_env("problem")
+
+
+
+
+
+#let proof(it, ref: none) = {
+  let displayed_ref = if ref != none { " (" + ref + ")" } else { "" }
 
   block[
-    #text[*_Ejercicio#displayed-number#displayed-title._*]
-    #body
+    #text[*_Demostración#displayed_ref.~--- _*]
+    #it
     #h(1fr)
-    $triangle.filled.br$
+    #text[$qed$]
   ]
 }
+
+
+
+
+
+
+
+
+
 
 // Remark
 #let remark(it) = {
@@ -433,12 +497,6 @@
 
 
 
-// TODO Put a reference to a math environment such as a theorem,
-// proposition, etc.
-#let proof(it) = {
-  block[#text[*_Demostración_*~--- #it#h(1fr)$qed$]]
-}
-
 
 
 
@@ -454,6 +512,7 @@
 
 
 
+// TODO Make a note environment.
 #let note() = {
 
 }
