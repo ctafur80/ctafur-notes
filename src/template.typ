@@ -6,8 +6,6 @@
 
 
 
-// CHOOSE the color palette/theme for the document.
-#let palette = dark_palette // Alt.: light_palette
 
 
 

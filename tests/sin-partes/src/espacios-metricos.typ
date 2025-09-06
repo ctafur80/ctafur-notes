@@ -1,5 +1,8 @@
 
-#import "../template.typ": *
+#import "../../../src/template.typ": *
+// #import "@local/ctafur-notes/src/template.typ": *
+// #import "/src/template.typ": *
+// #import "@local/ctafur-notes:0.1.0": *
 
 
 
@@ -31,16 +34,14 @@ mismo como ejercicios.
 En lo que respecta a la *Definición 1.1 (de Métrica)*, me gusta más la
 siguiente, ya que me parece más "elegante".
 
-#definition(title: "Métrica o Distancia")[
+#definition(number: "1.1", title: "Métrica o Distancia", numbering: "1.")[
   Dado un conjunto $bold(P)$ no vacío, una _métrica_ o _distancia_ es toda
   aplicación $d: bold(P) times bold(P) arrow.r.long bb(R)^+ union {0}$ en la
   que para cualesquiera $x, y, z in bold(P)$ se cumple:
 
-  #[ #set enum(numbering: "(i)")
-  + $d (x, y) = 0$ si y solo si $x = y$.
+  + $[d (x, y) = 0] arrow.l.r.double (x = y)$.
   + $d (x, y) = d (y, x)$. (Simetría.)
   + $d (x, y) lt.eq d(x, z) + d(z, y)$. (Desigualdad triangular.)
-  ]
 ] <def-metrica>
 
 La definición que dan en el libro establece como codominio a todo $bb(R)$ y
@@ -49,9 +50,99 @@ resulta más cómoda si se desea comprobar punto por punto, en los ejercicios,
 demostraciones, etc.
 
 Lo único es que, con la mía, hay que tener cuidado para ciertas cosas. Por
-ejemplo, para demostrar el paso que si $d (x, y) = 0$ entonces $x = y$.
+ejemplo, para demostrar el paso que si $d(x, y) = 0$ entonces $x = y$.
 Conviene hacerlo con el condicional contrarrecíproco, que sería lo mismo que
 en la definición del libro.
+
+#axiom(title: "P3 de Euclides (de la Regla Graduada)")[
+  En $(bold(P), d)$, para toda recta $r subset.eq bold(P)$ existe una
+  isometría $gamma: (r, d) arrow.r.long (RR, d')$ siendo $d'$ la distancia
+  definida del modo siguiente, para cualesquiera $x, y in RR$,
+
+  $ d'(x, y) = |x - y| $
+]
+
+Lo único es que, con la mía, hay que tener cuidado para ciertas cosas. Por
+ejemplo, para demostrar el paso que si $d(x, y) = 0$ entonces $x = y$.
+Conviene hacerlo con el condicional contrarrecíproco, que sería lo mismo que
+en la definición del libro.
+
+#exercise(number: "2.2")[
+  Esto es simplemente un ejercicio.
+
+  El *Ejemplo 1.2* es lo mismo que el *Ejercicio 1.2* (pág. 17 con la
+  solución en la pág. 256). Se obvian los primeros puntos de la Definición
+  1.1 (de Métrica), pero aquí los presentamos para que esté más completo.
+  (Usaremos la Definición 1.1 (de Métrica) presentada en estos apuntes.)
+
+  Advierta que las coordenadas que se usan en este ejercicio son distintas a
+  las que está acostumbrado de otras asignaturas donde se toca la geometría
+  (euclidiana) analítica. En estas lo normal es usar coordenadas del tipo
+
+  $ u = (x_1, y_1), quad v = (x_2, y_2) $
+
+  en lugar de
+
+  $ x = (x_1, x_2), quad y = (y_1, y_2) $
+
+  Lo primero será ver que $bb(R)^2$ es no vacío, cosa que sabemos
+  perfectamente, por tratarse de un conjunto que conocemos. Por ejemplo,
+  contiene al elemento $(0, 0)$.
+
+  Luego, se debe comprobar que el rango de la función $d_E$ se encuentra en
+  $bb(R)^+ union {0}$. Esto es fácil de ver por la fórmula de la función
+  pues todo lo que esté elevado al cuadrado producirá un valor mayor o igual
+  que $0$. La suma de esos valores también lo será y, a su vez, la raíz
+  cuadrada de esa suma.
+
+  Del punto 1, es trivial ver que si $x = y$ entonces $d_E (x, y) = 0$, con
+  una argumentación similar a la anterior. Más complicado es el otro
+  condicional, es decir, que de $d_E (x, y) = 0$ se deduce que $x = y$. Es
+  más cómodo hacerlo mediante su condicional contrarrecíproco, es decir, que
+  de $x eq.not y$ se deduce que $d_E (x, y) eq.not 0$. Habría que ver los
+  tres casos posibles en los que se da el antecedente, es decir, $x eq.not
+  y$:
+]
+
+#proof(ref: "Teorema 2.2 (de Pitágoras)")[
+  Esto es simplemente un ejercicio.
+
+  El *Ejemplo 1.2* es lo mismo que el *Ejercicio 1.2* (pág. 17 con la
+  solución en la pág. 256). Se obvian los primeros puntos de la Definición
+  1.1 (de Métrica), pero aquí los presentamos para que esté más completo.
+  (Usaremos la Definición 1.1 (de Métrica) presentada en estos apuntes.)
+
+  Advierta que las coordenadas que se usan en este ejercicio son distintas a
+  las que está acostumbrado de otras asignaturas donde se toca la geometría
+  (euclidiana) analítica. En estas lo normal es usar coordenadas del tipo
+
+  $ u = (x_1, y_1), quad v = (x_2, y_2) $
+
+  en lugar de
+
+  $ x = (x_1, x_2), quad y = (y_1, y_2) $
+
+  Lo primero será ver que $bb(R)^2$ es no vacío, cosa que sabemos
+  perfectamente, por tratarse de un conjunto que conocemos. Por ejemplo,
+  contiene al elemento $(0, 0)$.
+
+  Luego, se debe comprobar que el rango de la función $d_E$ se encuentra en
+  $bb(R)^+ union {0}$. Esto es fácil de ver por la fórmula de la función
+  pues todo lo que esté elevado al cuadrado producirá un valor mayor o igual
+  que $0$. La suma de esos valores también lo será y, a su vez, la raíz
+  cuadrada de esa suma.
+
+  Del punto 1, es trivial ver que si $x = y$ entonces $d_E (x, y) = 0$, con
+  una argumentación similar a la anterior. Más complicado es el otro
+  condicional, es decir, que de $d_E (x, y) = 0$ se deduce que $x = y$. Es
+  más cómodo hacerlo mediante su condicional contrarrecíproco, es decir, que
+  de $x eq.not y$ se deduce que $d_E (x, y) eq.not 0$. Habría que ver los
+  tres casos posibles en los que se da el antecedente, es decir, $x eq.not
+  y$:
+]
+
+
+
 
 
 
@@ -119,7 +210,7 @@ eq.not 0$ y, por tanto, un $(x_i - y_i)^2 > 0$. Por tanto, en esos tres
 casos, se tiene que $d_E (x, y) > 0$.
 */
 
-Punto 2.
+*Punto 2*.
 
 $ d_E (x, y)
   &= sqrt((x_1 - y_1)^2 + (x_2 - y_2)^2) \
@@ -223,6 +314,11 @@ En la *Definición 1.8*, también se puede usar una notación más explícita, a
 igual que sucede con lo que dijimos antes sobre la definición de
 _isometría_. En este caso, sería '$"Isom"(M, delta)$'.
 
+#proof[
+  Esta es la demostración de la *Observación 2.3*, que es bastante relevante
+  (quizás debería haberse enunciado como un teorema).
+]
+
 
 En cuanto a las propiedades presentadas al final de la página, las dos
 primeras son casos particulares del Teorema 1.7. Por su parte, la
@@ -282,7 +378,7 @@ La *Definición. 1.12* en realidad está definiendo dos cosas: (i) segmento y
 $b$", también se le suele llamar "segmento $a$ $b$".
 
 Por cierto, se podría pensar en el concepto de _segmento_ como en una
-generalización del de _intervalo_ de $(bb(R)), +, dot.op$.
+generalización del de _intervalo_ de $(bb(R), +, dot.op)$.
 
 En la definición de _puntos alineados_, se podría explicar también que esto
 está relacionado con el concepto de _recta_, que se define en el capítulo
@@ -324,7 +420,7 @@ cierta relación con algo que se verá en el capítulo dedicado a las
 isometrías. El apartado que me parece más difícil de comprender es el D.
 Pero primero haré una aclaración sobre el C.
 
-Punto C. Con las condiciones del problema hasta este apartado, se llega
+*Punto C*. Con las condiciones del problema hasta este apartado, se llega
 fácilmente a las igualdades siguientes:
 
 $ |g(x) - g(a)| &= |x - a| \
@@ -348,7 +444,7 @@ A partir de aquí, se puede hacer la manipulación que se muestra en el texto.
 Advierta que en algún punto se hacen las sustituciones $g(a) = a$ y $g(b) =
 b$.
 
-Punto D. Lo primero que hace es demostrar un resultado general para este
+*Punto D*. Lo primero que hace es demostrar un resultado general para este
 espacio métrico, $(bb(R), d_(bb(R)))$. Concretamente, que si dos de sus
 isometrías cumplen
 

@@ -1,5 +1,8 @@
 
-#import "../template.typ": *
+#import "../../../src/template.typ": *
+// #import "@local/ctafur-notes/src/template.typ": *
+// #import "/src/template.typ": *
+// #import "@local/ctafur-notes:0.1.0": *
 
 
 

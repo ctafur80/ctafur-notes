@@ -1,1 +1,1 @@
-../../src/main.typ
+../../src/template.typ

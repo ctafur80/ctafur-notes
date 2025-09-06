@@ -4,10 +4,10 @@
 [package]
 name = "ctafur-notes"
 version = "0.1.0"
-entrypoint = "src/main.typ"
 authors = ["Carlos E. Tafur Egido"]
 license = "MIT"
 description = "Template for note taking maths."
+entrypoint = "src/template.typ"
 
 
 

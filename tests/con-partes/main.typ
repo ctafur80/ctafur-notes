@@ -1,6 +1,6 @@
 
 
-#import "template.typ": *
+#import "../../src/template.typ": *
 
 
 
