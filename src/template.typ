@@ -8,15 +8,13 @@
 
 
 
-
-
 // Template settings.
 #let templ(
   // dark_theme: false,
   sheet: "a4",
   lang: "en",
   title: none,
-  authors: (), 
+  authors: (),
   abstract: [],
   // parts: false,
   outline_depth: 4,
@@ -122,9 +120,10 @@
   show heading: set text(weight: 400)
 
   show heading.where(level: 1): set text(size: 14pt)
-  show heading.where(level: 2): set text(size: 14pt)
+  show heading.where(level: 2): set text(size: 12pt)
   show heading.where(level: 3): set text(size: 10pt)
   show heading.where(level: 4): set text(size: 8pt)
+  show heading.where(level: 4): set text(size: 7pt)
 
 
 
@@ -218,6 +217,7 @@
   // }
   v(3cm)
   outline(depth: outline_depth)
+  pagebreak()
 
 
 
@@ -240,9 +240,6 @@
   }
 
   show heading.where(depth: 3): it => {
-    if it.supplement != [Outline] {
-      pagebreak(weak: true)
-    }
     v(1.5em)
     it
     v(0.7em)
@@ -261,5 +258,31 @@
   set par(justify: true)
   doc
 }
+
+
+
+
+
+// TODO When I put it in templ-book file it doesn't make any effect.
+// Updating the counters by sections
+#show heading.where(level: 1): it => {
+  // pagebreak()
+  counter("proposition").update(0)
+  counter("theorem").update(0)
+  counter("example").update(0)
+  counter("lemma").update(0)
+  counter("corollary").update(0)
+  counter("exercise").update(0)
+  counter("axiom").update(0)
+  counter("deffinition").update(0)
+  it
+}
+
+
+
+
+
+
+
 
 

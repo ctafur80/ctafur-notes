@@ -5,7 +5,6 @@
 
 
 
-
 // Template data.
 #show: templ.with(
   sheet: "tablet",
@@ -29,27 +28,6 @@
 
 
 
-// TODO When I put it in templ-book file it doesn't make any effect.
-// Updating the counters by sections
-#show heading.where(level: 1): it => {
-  counter("proposition").update(0)
-  counter("theorem").update(0)
-  counter("example").update(0)
-  counter("lemma").update(0)
-  counter("corollary").update(0)
-  counter("exercise").update(0)
-  counter("axiom").update(0)
-  counter("deffinition").update(0)
-  it
-}
-
-
-
-
-
-
-
-// ----------------------------------------------------------------------------
 
 
 = Introducción
