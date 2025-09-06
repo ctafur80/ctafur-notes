@@ -13,7 +13,7 @@ description = "Template for note taking maths."
 
 [template]
 path = "."
-entrypoint = "src/main.typ"
+entrypoint = "src/template.typ"
 # thumbnail = "thumbnail.png"
 
 
