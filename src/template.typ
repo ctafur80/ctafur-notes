@@ -92,7 +92,7 @@
 
 
   show raw: set text(
-    font: "JetBrains Mono", // font: "JetBrainsMonoNL NF",
+    font: "JetBrains Mono NL", // font: "JetBrainsMonoNL NL",
     size: 7pt,
   )
 
@@ -150,7 +150,22 @@
 
 
 
+  // Cambió en la versión 0.14 de Typst y ahora no funciona bien. El antiguo
+  // está comentado justo después.
+  // Enumerates automatically the labeled non-referenced equations.
+  // set math.equation(numbering: "(1)")
+  /*
+  show math.equation: it => {
+      if it.block and not it.has("label") [
+        #counter(math.equation).update(v => v - 1)
+        #math.equation(it.body, block: true, numbering: none)
+      ] else {
+        it
+      }
+  }
+  */
 
+  /*
   // Enumerates automatically the labeled non-referenced equations.
   set math.equation(numbering: "(1)")
   show math.equation: it => {
@@ -161,6 +176,8 @@
         it
       }
   }
+  */
+
 
 
   /*
