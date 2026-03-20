@@ -3,6 +3,8 @@
 // Document themes
 
 
+
+
 #let light_palette = (
   bg: rgb("fff"),
   fg: rgb("000"),

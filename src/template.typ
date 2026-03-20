@@ -6,9 +6,45 @@
 
 
 
+// Variables
+// ----------------------------------------------------------------------------
+#let body_weight = 300
+#let bold_weight = 400
 
 
-// Template settings.
+#let main_body_text_settings = (
+  font: "Noto Sans",
+  size: 8pt,
+  weight: body_weight,
+  tracking: 0.3pt,
+
+  /* Alts.
+  font: "Times New Roman",
+  size: 8pt,
+  weight: 100,
+  tracking: 0.6pt,
+
+  font: "New Computer Modern",
+  tracking: 0.2pt,
+  size: 10pt,
+  */
+)
+
+
+#let raw_font_text_settings = (
+  font: "JetBrains Mono NL", // "JetBrainsMonoNL NL",
+  size: 7pt,
+  ligatures: false,
+  weight: 200,
+  features: (frac: 0, numr: 0, sups: 0, ordn: 0),
+)
+
+
+
+
+
+// Template
+// ----------------------------------------------------------------------------
 #let templ(
   // dark_theme: false,
   sheet: "a4",
@@ -71,34 +107,18 @@
   ) // set page
 
 
-  set text(
-    // font: "Times New Roman",
-    // size: 8pt,
-    // weight: 100,
-    // tracking: 0.6pt,
-    //
-    font: "Noto Sans",
-    size: 8pt,
-    weight: 300,
-    tracking: 0.3pt,
-    //
-    // font: "New Computer Modern",
-    // tracking: 0.2pt,
-    // size: 10pt,
-    fill: palette.fg,
-  )
+  set text(..main_body_text_settings)
+  set text(fill: palette.fg)
 
-  show strong: set text(weight: 200)
+  show strong: set text(weight: bold_weight)
 
-
-  show raw: set text(
-    font: "JetBrains Mono NL", // font: "JetBrainsMonoNL NL",
-    size: 7pt,
-  )
+  show raw: set text(..raw_font_text_settings)
 
 
   // Default math font: Computer Modern (CM), the same as in TeX.
-  show math.equation: set text(size: 9pt, weight: 100)
+  show math.equation: set text(size: 9pt, weight: 100, font: "STIX Two Math")
+  // show math.equation: set text(size: 9pt, weight: 100)
+
   /*
   show math.equation: it => {
     if it.body.func() == math.sans[].func(){
@@ -109,21 +129,21 @@
   }
   */
 
-  // Aún no se puede usar la siguiente. Creo que por un bug de la función
-  // `show()`.
+  // El problema con lo siguiente es que los números quiero dejarlos en CM.
   // show math.text: set text(font: "Noto Sans", weight: 300, size: 7pt)
+  // Lo siguiente hace otra cosa parecida.
   // show math.text: text.with(font: "Noto Sans")
 
 
 
   // Headings
-  show heading: set text(weight: 400)
+  show heading: set text(weight: bold_weight)
 
   show heading.where(level: 1): set text(size: 14pt)
   show heading.where(level: 2): set text(size: 12pt)
   show heading.where(level: 3): set text(size: 10pt)
   show heading.where(level: 4): set text(size: 8pt)
-  show heading.where(level: 4): set text(size: 7pt)
+  show heading.where(level: 5): set text(size: 7pt)
 
 
 
@@ -147,6 +167,11 @@
   )
 
   // set heading(numbering: "1.")
+
+
+
+
+  set table(stroke: 0.4pt + palette.fg)
 
 
 
@@ -203,7 +228,7 @@
 
   // -- Title page --
   set align(center+horizon)
-  text(weight: 400, size: 18pt, title)
+  text(weight: bold_weight, size: 18pt, title)
 
   v(2em)
 
