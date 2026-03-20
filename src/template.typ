@@ -13,8 +13,7 @@
 
 
 #let main_body_text_settings = (
-  font: "Times",
-  // font: "Noto Sans",
+  font: "Noto Sans",
   size: 8pt,
   weight: body_weight,
   tracking: 0.3pt,
@@ -24,11 +23,11 @@
   size: 8pt,
   weight: 100,
   tracking: 0.6pt,
-
-  font: "New Computer Modern",
-  tracking: 0.2pt,
-  size: 10pt,
   */
+
+  // font: "New Computer Modern",
+  // tracking: 0.2pt,
+  // size: 10pt,
 )
 
 
@@ -117,8 +116,8 @@
 
 
   // Default math font: Computer Modern (CM), the same as in TeX.
-  show math.equation: set text(size: 9pt, weight: 100, font: "STIX Two Math")
-  // show math.equation: set text(size: 9pt, weight: 100)
+  // show math.equation: set text(size: 9pt, weight: 100, font: "STIX Two Math")
+  show math.equation: set text(size: 9pt, weight: 100)
 
   /*
   show math.equation: it => {
