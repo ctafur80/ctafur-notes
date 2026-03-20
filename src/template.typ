@@ -13,7 +13,8 @@
 
 
 #let main_body_text_settings = (
-  font: "Noto Sans",
+  font: "Times",
+  // font: "Noto Sans",
   size: 8pt,
   weight: body_weight,
   tracking: 0.3pt,
