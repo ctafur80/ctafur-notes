@@ -219,6 +219,11 @@
 )
 */
 
+// I think that it is not necessary.
+// #let st = math.class("relation", "|")
+
+
+
 
 
 

@@ -8,8 +8,11 @@
 
 // Variables
 // ----------------------------------------------------------------------------
-#let body_weight = 300
-#let bold_weight = 400
+
+// TODO Move them to palette.typ
+#let body_weight = 340
+#let heading_weight = 400
+// #let title_weight = 400
 
 
 #let main_body_text_settings = (
@@ -59,6 +62,9 @@
 
   set text(lang: lang)
 
+
+  set heading(numbering: "1.")
+
   set page(
     fill: palette.bg,
 
@@ -72,7 +78,6 @@
       (x: 8pt, y: 8pt)
     },
 
-    // numbering: "1",
 
     footer: none,
 
@@ -110,14 +115,10 @@
   set text(..main_body_text_settings)
   set text(fill: palette.fg)
 
-  show strong: set text(weight: bold_weight)
+  // show strong: set text(weight: bold_weight)
 
   show raw: set text(..raw_font_text_settings)
 
-
-  // Default math font: Computer Modern (CM), the same as in TeX.
-  // show math.equation: set text(size: 9pt, weight: 100, font: "STIX Two Math")
-  show math.equation: set text(size: 9pt, weight: 100)
 
   /*
   show math.equation: it => {
@@ -137,7 +138,7 @@
 
 
   // Headings
-  show heading: set text(weight: bold_weight)
+  show heading: set text(weight: heading_weight)
 
   show heading.where(level: 1): set text(size: 14pt)
   show heading.where(level: 2): set text(size: 12pt)
@@ -146,6 +147,36 @@
   show heading.where(level: 5): set text(size: 7pt)
 
 
+
+  // show math.equation: set text(size: 1.2em, font: "New Computer Modern")
+  show math.equation: set text(size: 1.2em)
+
+
+  // // Managing math text settings in body, headings, etc.
+  // // Create a switch for title-awareness.
+  // let en-heading = state("en-encabezado", false)
+  //
+  // // On and off the switch in headings.
+  // show heading: it => {
+  //   en-heading.update(true)
+  //   it
+  //   en-heading.update(false)
+  // }
+  //
+  // // Alt. show math.equation: set text(font: "STIX Two Math")
+  //
+  // // Managing math text settings.
+  // // We use `context`  for reading the current `en-encabezado` state.
+  // show math.equation: it => context {
+  //   if en-heading.get() {
+  //     // If it is inside a heading, it inherits its size (1em).
+  //     text(size: 1em, weight: heading_weight, it)
+  //   } else {
+  //     // If it is in body, tables... set it to 9pt.
+  //     text(size: 1.2em, weight: 100, it)
+  //   }
+  // }
+  //
 
   // Code block background.
   show raw.where(block: true): block.with(
@@ -228,7 +259,7 @@
 
   // -- Title page --
   set align(center+horizon)
-  text(weight: bold_weight, size: 18pt, title)
+  text(weight: heading_weight, size: 18pt, title)
 
   v(2em)
 
@@ -302,7 +333,66 @@
 }
 
 
+#let norm(cuerpo) = {
+  set text(
+    font: main_body_text_settings.font,
+    size: main_body_text_settings.size,
+    weight: body_weight,
+    tracking: main_body_text_settings.tracking
+  )
 
+  show math.equation: set text(
+    font: "New Computer Modern Math",
+    size: 1.5em,
+  )
+
+  h(1.2em)
+  cuerpo
+}
+
+
+
+#let emptyset = sym.diameter
+
+
+// // TODO Make v space the same as in displayed math.
+// #let func_sig(name, dom, codom, var, value) = {
+//   align(center)[
+//     #v(0.3em)
+//     #table(
+//       stroke: none,
+//       inset: 2pt,
+//       row-gutter: 5pt,
+//       columns: 5,
+//       align: (right, center, right, center, left),
+//       $#name$,  $:$,  $dom$, $-->$,         $codom$,
+//       $$,       $$,   $var$, $mapsto.long$, $value$,
+//     )
+//     #v(0.3em)
+//   ]
+// }
+
+#let func_sig(name, dom, codom, var, value) = [
+  $ & name  & : && dom & -->         && codom \
+    &       &   && var & mapsto.long && value $
+]
+
+// TODO Usar espacios quad en lugar de math.space
+#let iff = $#math.space #math.arrow.l.r.double.long #math.space$
+#let implies = $#math.space #math.arrow.r.double.long #math.space$
+
+
+
+#let hl(it) = { align(center)[#rect(stroke: 0.3pt + palette.fg)[#it]] }
+
+
+// TODO Crear entorno de expresión simbólica alternativa de un resultado.
+
+// TODO Crear entorno de expresión alternativa en Lean de un resultado.
+
+// TODO Crear entorno de explicación de notación.
+
+// TODO Crear entorno de explicación de terminología.
 
 
 // TODO When I put it in templ-book file it doesn't make any effect.
@@ -319,6 +409,7 @@
   counter("deffinition").update(0)
   it
 }
+
 
 
 
