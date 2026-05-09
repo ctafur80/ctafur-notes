@@ -386,11 +386,24 @@
 #let hl(it) = { align(center)[#rect(stroke: 0.3pt + palette.fg)[#it]] }
 
 
+// Quizás ahora sobre
 #let tbl-standard-head = it => {
   // set align(center)
   set text(weight: "bold", style: "italic")
   show math.equation: math.bold
   it
+}
+
+
+#let std_table(..items) = {
+  show table.cell.where(y: 0): it => {
+    set text(weight: "bold", style: "italic")
+    show math.equation: math.bold
+    it
+  }
+  align(center)[
+    #table(..items)
+  ]
 }
 
 
