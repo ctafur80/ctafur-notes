@@ -36,7 +36,7 @@
 
 #let raw_font_text_settings = (
   font: "JetBrains Mono NL", // "JetBrainsMonoNL NL",
-  size: 7pt,
+  size: 8pt,
   ligatures: false,
   weight: 200,
   features: (frac: 0, numr: 0, sups: 0, ordn: 0),
@@ -384,6 +384,29 @@
 
 
 #let hl(it) = { align(center)[#rect(stroke: 0.3pt + palette.fg)[#it]] }
+
+
+#let tbl-standard-head = it => {
+  // set align(center)
+  set text(weight: "bold", style: "italic")
+  show math.equation: math.bold
+  it
+}
+
+
+// TODO Hacer una función para introducir cómodamente la hipótesis y la meta
+// de inducción del paso inductivo.
+
+  // #table(
+  //   columns: 2,
+  //   align: (left, left),
+  //   stroke: none,
+  //   [#sym.bullet hipótesis:],
+  //     $m dot n = n dot m$,
+  //   [#sym.bullet meta:],
+  //     $m dot suc(n) = suc(n) dot m$,
+  // )
+
 
 
 // TODO Crear entorno de expresión simbólica alternativa de un resultado.
