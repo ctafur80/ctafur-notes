@@ -272,11 +272,13 @@
     &       &   && var & mapsto.long && value $
 ]
 
-// TODO Usar espacios quad en lugar de math.space
+// TODO Quizás sea mejor marcarlo como operador binario, en lugar de con
+// espacios fijos.
 #let iff = $#math.space #math.arrow.l.r.double.long #math.space$
 #let implies = $#math.space #math.arrow.r.double.long #math.space$
 
 
+// Highlight in a box.
 #let hl(it) = align(center)[#rect(stroke: 0.3pt + palette.fg)[#it]]
 
 
