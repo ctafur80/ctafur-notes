@@ -46,6 +46,11 @@
   }
 }
 
+#let reset-figure-counters() = {
+  counter(figure.where(kind: image)).update(0)
+  counter(figure.where(kind: table)).update(0)
+}
+
 
 // Template
 // ----------------------------------------------------------------------------
@@ -71,6 +76,17 @@
   } else {
     env_counter_reset_depth
   }
+
+  set figure(numbering: n => context {
+    let heading-numbers = counter(heading).get()
+    let chapter-number = if heading-numbers.len() >= chapter-depth {
+      heading-numbers.at(chapter-depth - 1)
+    } else {
+      0
+    }
+
+    str(chapter-number) + "." + str(n)
+  })
 
   set page(
     fill: palette.bg,
@@ -234,6 +250,10 @@
 
     if it.level == reset-depth and it.supplement != [Outline] {
       reset-section-counters()
+    }
+
+    if it.level == chapter-depth and it.supplement != [Outline] {
+      reset-figure-counters()
     }
 
     if it.level == 1 or (parts and it.level == chapter-depth) {
