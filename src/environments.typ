@@ -8,32 +8,32 @@
   definition: (
     title: "definición",
     bg: palette.math_hl_env_bg,
-    numbering: "i.",
+    numbering: "1.",
   ),
   axiom: (
     title: "axioma",
     bg: palette.ax_env_bg,
-    numbering: "i.",
+    numbering: "1.",
   ),
   theorem: (
     title: "teorema",
     bg: palette.math_hl_env_bg,
-    numbering: "i.",
+    numbering: "1.",
   ),
   proposition: (
     title: "proposición",
     bg: palette.math_hl_env_bg,
-    numbering: "i.",
+    numbering: "1.",
   ),
   lemma: (
     title: "lema",
     bg: palette.math_hl_env_bg,
-    numbering: "i.",
+    numbering: "1.",
   ),
   corollary: (
     title: "corolario",
     bg: palette.math_hl_env_bg,
-    numbering: "i.",
+    numbering: "1.",
   ),
 )
 
@@ -43,11 +43,30 @@
 
 
 // Generic maths highlighted environments function.
-#let maths_hl_envs(kind, body, number: none, title: none, numbering: none, bg: none) = {
-  let cfg = maths_hl_envs_data.at(kind)
-  let suffix = env_title_suffix(number: number, title: title)
+#let env_auto_number(kind, numbering) = context {
+  counter(kind).step()
+  counter(kind).display(numbering)
+}
 
-  set enum(numbering: if numbering != none { numbering } else { cfg.numbering })
+
+#let env_number(kind, number, numbering) = {
+  if number == auto {
+    env_auto_number(kind, numbering)
+  } else {
+    number
+  }
+}
+
+
+#let maths_hl_envs(kind, body, number: auto, title: none, numbering: none, bg: none) = {
+  let cfg = maths_hl_envs_data.at(kind)
+  let env-numbering = if numbering != none { numbering } else { cfg.numbering }
+  let suffix = env_title_suffix(
+    number: env_number(kind, number, env-numbering),
+    title: title,
+  )
+
+  set enum(numbering: env-numbering)
 
   block(
     width: 100%,
@@ -62,7 +81,7 @@
 
 
 #let make_math_env(kind) = {
-  (body, number: none, title: none, numbering: none, bg: none) => {
+  (body, number: auto, title: none, numbering: none, bg: none) => {
     maths_hl_envs(kind, body, number: number, title: title, numbering: numbering, bg: bg)
   }
 }
@@ -79,23 +98,30 @@
 #let exr_like_envs_data = (
   example: (
     title: "ejemplo",
+    numbering: "1.",
     final_marker: $triangle.filled.br$,
   ),
   exercise: (
     title: "ejercicio",
+    numbering: "1.",
     final_marker: $triangle.filled.br$,
   ),
   problem: (
     title: "problema",
+    numbering: "1.",
     final_marker: $triangle.filled.br$,
   ),
 )
 
 
 // Generic exercise-like environments function.
-#let exr_like_envs(kind, body, number: none, title: none, final_marker: none) = {
+#let exr_like_envs(kind, body, number: auto, title: none, numbering: none, final_marker: none) = {
   let cfg = exr_like_envs_data.at(kind)
-  let suffix = env_title_suffix(number: number, title: title)
+  let env-numbering = if numbering != none { numbering } else { cfg.numbering }
+  let suffix = env_title_suffix(
+    number: env_number(kind, number, env-numbering),
+    title: title,
+  )
   let marker = if final_marker != none { final_marker } else { cfg.final_marker }
 
   block[
@@ -107,8 +133,15 @@
 
 
 #let make_exr_env(kind) = {
-  (body, number: none, title: none, final_marker: none) => {
-    exr_like_envs(kind, body, number: number, title: title, final_marker: final_marker)
+  (body, number: auto, title: none, numbering: none, final_marker: none) => {
+    exr_like_envs(
+      kind,
+      body,
+      number: number,
+      title: title,
+      numbering: numbering,
+      final_marker: final_marker,
+    )
   }
 }
 
@@ -174,4 +207,3 @@
 
 // I think that it is not necessary.
 // #let st = math.class("relation", "|")
-

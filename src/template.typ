@@ -34,6 +34,19 @@
 )
 
 
+// Counters reset at each top-level section/chapter.
+#let section-counter-names = (
+  "definition", "axiom", "theorem", "proposition", "lemma",
+  "corollary", "example", "exercise", "problem",
+)
+
+#let reset-section-counters() = {
+  for name in section-counter-names {
+    counter(name).update(0)
+  }
+}
+
+
 // Template
 // ----------------------------------------------------------------------------
 #let templ(
@@ -45,6 +58,7 @@
   abstract: [],
   // parts: false,
   outline_depth: 4,
+  env_counter_reset_depth: 1,
   doc,
 ) = {
   set text(lang: lang)
@@ -54,8 +68,8 @@
 
   set page(
     fill: palette.bg,
-    paper: if tablet { "a5" },
-    margin: if tablet { (x: 8pt, y: 8pt) },
+    paper: if tablet { "a5" } else { sheet },
+    margin: if tablet { (x: 8pt, y: 8pt) } else { auto },
     footer: none,
     header: if tablet {
       none
@@ -208,9 +222,18 @@
   pagebreak()
 
   show outline: set heading(supplement: [Outline])
+  if env_counter_reset_depth != 1 {
+    show heading.where(depth: env_counter_reset_depth): it => {
+      reset-section-counters()
+      it
+    }
+  }
   show heading.where(depth: 1): it => {
     if it.supplement != [Outline] {
       pagebreak(weak: true)
+      if env_counter_reset_depth == 1 {
+        reset-section-counters()
+      }
     }
     v(4cm)
     it
@@ -288,18 +311,3 @@
 // TODO Crear entorno de expresión alternativa en Lean de un resultado.
 // TODO Crear entorno de explicación de notación.
 // TODO Crear entorno de explicación de terminología.
-
-// TODO When I put it in templ-book file it doesn't make any effect.
-// Updating the counters by sections
-#let section-counter-names = (
-  "proposition", "theorem", "example", "lemma",
-  "corollary", "exercise", "axiom", "deffinition",
-)
-
-#show heading.where(level: 1): it => {
-  for name in section-counter-names {
-    counter(name).update(0)
-  }
-  it
-}
-

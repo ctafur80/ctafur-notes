@@ -12,11 +12,12 @@
 
 // Optional suffixes for theorem-like environments (number, title, ref, …).
 #let env_parenthetical(value) = {
-  if value != none { " (" + value + ")" } else { "" }
+  if value != none { [ (#value)] } else { [] }
 }
 
 #let env_title_suffix(number: none, title: none) = {
-  (if number != none { " " + number } else { "" }) + env_parenthetical(title)
+  let number-suffix = if number != none { [ #number] } else { [] }
+  [#number-suffix#env_parenthetical(title)]
 }
 
 
@@ -36,4 +37,3 @@
     v(bottom)
   }
 }
-
