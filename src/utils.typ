@@ -1,7 +1,5 @@
 
-
 #import "./palette.typ": *
-
 
 
 // Puts in uppercase just the first letter in a word.
@@ -12,6 +10,15 @@
 }
 
 
+// Optional suffixes for theorem-like environments (number, title, ref, …).
+#let env_parenthetical(value) = {
+  if value != none { " (" + value + ")" } else { "" }
+}
+
+#let env_title_suffix(number: none, title: none) = {
+  (if number != none { " " + number } else { "" }) + env_parenthetical(title)
+}
+
 
 // Thematic pause.
 #let hrule = block[
@@ -21,5 +28,12 @@
 ]
 
 
-
+// Vertical spacing before and after headings of a given depth.
+#let heading_vspace(depth, top, bottom) = {
+  show heading.where(depth: depth): it => {
+    v(top)
+    it
+    v(bottom)
+  }
+}
 

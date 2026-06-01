@@ -1,8 +1,5 @@
 
-
 // Document themes
-
-
 
 
 #let light_palette = (
@@ -21,8 +18,11 @@
 )
 
 
-
 // CHOOSE the color palette/theme for the document.
 #let palette = dark_palette // Alt.: light_palette
 
+
+// Typography weights (body and headings).
+#let body_weight = 340
+#let heading_weight = 400
 

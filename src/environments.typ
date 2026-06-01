@@ -1,10 +1,6 @@
 
-
 #import "./palette.typ": *
 #import "./utils.typ": *
-
-
-
 
 
 // Data for the different kinds of maths highlighted environments.
@@ -38,46 +34,34 @@
     title: "corolario",
     bg: palette.math_hl_env_bg,
     numbering: "i.",
-  )
+  ),
 )
-
 
 
 // TODO Unify highlighted environments and exercise-like environments, including remarks,
 // etc.
 
 
-
-
 // Generic maths highlighted environments function.
 #let maths_hl_envs(kind, body, number: none, title: none, numbering: none, bg: none) = {
-
   let cfg = maths_hl_envs_data.at(kind)
+  let suffix = env_title_suffix(number: number, title: title)
 
-  let numbering_style = if numbering != none { numbering } else { cfg.numbering }
-  let fill_style = if bg != none { bg } else { cfg.bg }
-
-  let displayed_number = if number != none { " " + number } else { "" }
-  let displayed_title = if title != none { " (" + title + ")" } else { "" }
-
-  set enum(numbering: numbering_style)
+  set enum(numbering: if numbering != none { numbering } else { cfg.numbering })
 
   block(
     width: 100%,
-    fill: fill_style,
+    fill: if bg != none { bg } else { cfg.bg },
     inset: 8pt,
     radius: 4pt,
   )[
-    #text[*_#capitalize(cfg.title)#displayed_number#displayed_title.---_* ]
+    #text[*_#capitalize(cfg.title)#suffix.---_* ]
     #body
   ]
 }
 
 
-// Highlighted maths environments.
-
-// Wrapper function
-#let make_math_env = kind => {
+#let make_math_env(kind) = {
   (body, number: none, title: none, numbering: none, bg: none) => {
     maths_hl_envs(kind, body, number: number, title: title, numbering: numbering, bg: bg)
   }
@@ -89,11 +73,6 @@
 #let proposition = make_math_env("proposition")
 #let lemma = make_math_env("lemma")
 #let corollary = make_math_env("corollary")
-
-
-
-
-
 
 
 // Data of exercise-like environments.
@@ -113,28 +92,21 @@
 )
 
 
-
 // Generic exercise-like environments function.
 #let exr_like_envs(kind, body, number: none, title: none, final_marker: none) = {
   let cfg = exr_like_envs_data.at(kind)
-
-  // elegir marcador
+  let suffix = env_title_suffix(number: number, title: title)
   let marker = if final_marker != none { final_marker } else { cfg.final_marker }
 
-  let displayed_number = if number != none { " " + number } else { "" }
-  let displayed_title = if title != none { " (" + title + ")" } else { "" }
-
   block[
-    #text[*_#capitalize(cfg.title)#displayed_number#displayed_title.---_* ]
+    #text[*_#capitalize(cfg.title)#suffix.---_* ]
     #body
-    // marcador al final
     #h(1fr) #marker
   ]
 }
 
 
-// Exercise-like environments (wrappers).
-#let make_exr_env = kind => {
+#let make_exr_env(kind) = {
   (body, number: none, title: none, final_marker: none) => {
     exr_like_envs(kind, body, number: number, title: title, final_marker: final_marker)
   }
@@ -145,14 +117,9 @@
 #let problem = make_exr_env("problem")
 
 
-
-
-
 #let proof(it, ref: none) = {
-  let displayed_ref = if ref != none { " (" + ref + ")" } else { "" }
-
   block[
-    #text[*_Demostración#displayed_ref.~--- _*]
+    #text[*_Demostración#env_parenthetical(ref).~--- _*]
     #it
     #h(1fr)
     #text[$qed$]
@@ -160,28 +127,17 @@
 }
 
 
-
-
-// Remark
 #let remark(it) = {
   block[#text[*_Observación_*. #it #h(1fr) $triangle.filled.br$]]
 }
 
-
-// Remark about notation.
 #let remark_notat(it) = {
   block[#text[*_Notación_*. #it#h(1fr)$triangle.filled.br$]]
 }
 
-// Remark about terminology.
 #let remark_term(it) = {
   block[#text[*_Terminología_*. #it#h(1fr)$triangle.filled.br$]]
 }
-
-
-
-
-
 
 
 // Page number marker
@@ -194,21 +150,18 @@
 }
 
 
-
 // TODO Make a note environment.
-#let note() = {
-
-}
+#let note() = {}
 
 
 #let diversion(it) = {
   block(
     fill: luma(55),
     inset: 8pt,
-    radius: 4pt)[#text[#it]]
-    // radius: 4pt)[#text[*_Desvío_*~--- #it]]
+    radius: 4pt,
+  )[#text[#it]]
+  // radius: 4pt)[#text[*_Desvío_*~--- #it]]
 }
-
 
 
 // TODO Entorno de tipo enum para los pasos en una demostración. Vea
@@ -221,9 +174,4 @@
 
 // I think that it is not necessary.
 // #let st = math.class("relation", "|")
-
-
-
-
-
 
