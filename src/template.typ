@@ -56,15 +56,21 @@
   title: none,
   authors: (),
   abstract: [],
-  // parts: false,
+  parts: false,
   outline_depth: 4,
-  env_counter_reset_depth: 1,
+  env_counter_reset_depth: auto,
   doc,
 ) = {
   set text(lang: lang)
   set heading(numbering: "1.")
 
   let tablet = sheet == "tablet"
+  let chapter-depth = if parts { 2 } else { 1 }
+  let reset-depth = if env_counter_reset_depth == auto {
+    chapter-depth
+  } else {
+    env_counter_reset_depth
+  }
 
   set page(
     fill: palette.bg,
@@ -222,26 +228,33 @@
   pagebreak()
 
   show outline: set heading(supplement: [Outline])
-  if env_counter_reset_depth != 1 {
-    show heading.where(depth: env_counter_reset_depth): it => {
+  show heading: it => {
+    let section-depth = chapter-depth + 1
+    let subsection-depth = chapter-depth + 2
+
+    if it.level == reset-depth and it.supplement != [Outline] {
       reset-section-counters()
+    }
+
+    if it.level == 1 or (parts and it.level == chapter-depth) {
+      if it.supplement != [Outline] {
+        pagebreak(weak: true)
+      }
+      v(4cm)
+      it
+      v(1.3em)
+    } else if it.level == section-depth {
+      v(2cm)
+      it
+      v(1em)
+    } else if it.level == subsection-depth {
+      v(1.5em)
+      it
+      v(0.7em)
+    } else {
       it
     }
   }
-  show heading.where(depth: 1): it => {
-    if it.supplement != [Outline] {
-      pagebreak(weak: true)
-      if env_counter_reset_depth == 1 {
-        reset-section-counters()
-      }
-    }
-    v(4cm)
-    it
-    v(1.3em)
-  }
-
-  heading_vspace(2, 2cm, 1em)
-  heading_vspace(3, 1.5em, 0.7em)
 
   set footnote.entry(separator: line(
     length: 30% + 0pt,

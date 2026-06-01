@@ -29,9 +29,9 @@
 ]
 
 
-// Vertical spacing before and after headings of a given depth.
-#let heading_vspace(depth, top, bottom) = {
-  show heading.where(depth: depth): it => {
+// Vertical spacing before and after headings of a given level.
+#let heading_vspace(level, top, bottom) = {
+  show heading.where(level: level): it => {
     v(top)
     it
     v(bottom)

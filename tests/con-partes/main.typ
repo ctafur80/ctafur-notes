@@ -9,6 +9,7 @@
 #show: templ.with(
   sheet: "tablet",
   lang: "es",
+  parts: true,
   title: [Apuntes de Geometría Básica],
   authors: (
     (
@@ -56,7 +57,6 @@
 
 
 #bibliography("referencias.yaml", style: "ieee")
-
 
 
 
