@@ -34,7 +34,7 @@
 )
 
 
-// Counters reset at each top-level section/chapter.
+// Environment counters reset at each top-level section.
 #let section-counter-names = (
   "definition", "axiom", "theorem", "proposition", "lemma",
   "corollary", "example", "exercise", "problem",
@@ -43,6 +43,7 @@
 #let reset-section-counters() = {
   for name in section-counter-names {
     counter(name).update(0)
+    counter(figure.where(kind: name)).update(0)
   }
 }
 
@@ -72,7 +73,7 @@
   let tablet = sheet == "tablet"
   let chapter-depth = if parts { 2 } else { 1 }
   let reset-depth = if env_counter_reset_depth == auto {
-    chapter-depth
+    1
   } else {
     env_counter_reset_depth
   }
@@ -82,7 +83,7 @@
     let chapter-number = if heading-numbers.len() >= chapter-depth {
       heading-numbers.at(chapter-depth - 1)
     } else {
-      0
+      1
     }
 
     str(chapter-number) + "." + str(n)
@@ -160,6 +161,32 @@
   )
 
   show figure.caption: set text(style: "italic")
+
+  show ref: it => {
+    let is-env-ref = it.form == "normal" and it.element != none and it.element.func() == figure and section-counter-names.contains(it.element.kind)
+    if is-env-ref {
+      context {
+        let loc = it.element.location()
+        let heading-numbers = counter(heading).at(loc)
+        let top-level-number = if heading-numbers.len() > 0 {
+          heading-numbers.first()
+        } else {
+          1
+        }
+
+        let env-numbers = counter(figure.where(kind: it.element.kind)).at(loc)
+        let env-number = if env-numbers.len() > 0 {
+          env-numbers.first()
+        } else {
+          1
+        }
+
+        link(it.target)[#it.element.supplement~#top-level-number.#env-number]
+      }
+    } else {
+      it
+    }
+  }
 
   set par(
     justify: true,

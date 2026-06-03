@@ -8,32 +8,32 @@
   definition: (
     title: "definición",
     bg: palette.math_hl_env_bg,
-    numbering: "1.",
+    numbering: "1",
   ),
   axiom: (
     title: "axioma",
     bg: palette.ax_env_bg,
-    numbering: "1.",
+    numbering: "1",
   ),
   theorem: (
     title: "teorema",
     bg: palette.math_hl_env_bg,
-    numbering: "1.",
+    numbering: "1",
   ),
   proposition: (
     title: "proposición",
     bg: palette.math_hl_env_bg,
-    numbering: "1.",
+    numbering: "1",
   ),
   lemma: (
     title: "lema",
     bg: palette.math_hl_env_bg,
-    numbering: "1.",
+    numbering: "1",
   ),
   corollary: (
     title: "corolario",
     bg: palette.math_hl_env_bg,
-    numbering: "1.",
+    numbering: "1",
   ),
 )
 
@@ -43,15 +43,33 @@
 
 
 // Generic maths highlighted environments function.
-#let env_auto_number(kind, numbering) = context {
-  counter(kind).step()
-  counter(kind).display(numbering)
+#let env_figure_numbering(number, numbering-pattern) = {
+  if number == auto {
+    numbering-pattern
+  } else if number == none {
+    none
+  } else {
+    n => number
+  }
 }
 
 
-#let env_number(kind, number, numbering) = {
+#let env_auto_number(kind, numbering-pattern) = context {
+  let heading-numbers = counter(heading).get()
+  let top-level-number = if heading-numbers.len() > 0 {
+    heading-numbers.first()
+  } else {
+    1
+  }
+
+  let env-number = counter(figure.where(kind: kind)).display(numbering-pattern)
+  [#top-level-number.#env-number]
+}
+
+
+#let env_number(kind, number, numbering-pattern) = {
   if number == auto {
-    env_auto_number(kind, numbering)
+    env_auto_number(kind, numbering-pattern)
   } else {
     number
   }
@@ -66,17 +84,22 @@
     title: title,
   )
 
-  set enum(numbering: env-numbering)
-
-  block(
-    width: 100%,
-    fill: if bg != none { bg } else { cfg.bg },
-    inset: 8pt,
-    radius: 4pt,
-  )[
-    #text[*_#capitalize(cfg.title)#suffix.---_* ]
-    #body
-  ]
+  figure(
+    kind: kind,
+    supplement: [#capitalize(cfg.title)],
+    numbering: env_figure_numbering(number, env-numbering),
+    outlined: false,
+    block(
+      width: 100%,
+      fill: if bg != none { bg } else { cfg.bg },
+      inset: 8pt,
+      radius: 4pt,
+    )[
+      #set enum(numbering: env-numbering)
+      #text[*_#capitalize(cfg.title)#suffix.---_* ]
+      #body
+    ],
+  )
 }
 
 
@@ -98,17 +121,17 @@
 #let exr_like_envs_data = (
   example: (
     title: "ejemplo",
-    numbering: "1.",
+    numbering: "1",
     final_marker: $triangle.filled.br$,
   ),
   exercise: (
     title: "ejercicio",
-    numbering: "1.",
+    numbering: "1",
     final_marker: $triangle.filled.br$,
   ),
   problem: (
     title: "problema",
-    numbering: "1.",
+    numbering: "1",
     final_marker: $triangle.filled.br$,
   ),
 )
@@ -124,11 +147,18 @@
   )
   let marker = if final_marker != none { final_marker } else { cfg.final_marker }
 
-  block[
-    #text[*_#capitalize(cfg.title)#suffix.---_* ]
-    #body
-    #h(1fr) #marker
-  ]
+  figure(
+    kind: kind,
+    supplement: [#capitalize(cfg.title)],
+    numbering: env_figure_numbering(number, env-numbering),
+    outlined: false,
+    block[
+      #set enum(numbering: env-numbering)
+      #text[*_#capitalize(cfg.title)#suffix.---_* ]
+      #body
+      #h(1fr) #marker
+    ],
+  )
 }
 
 
