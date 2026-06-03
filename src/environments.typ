@@ -95,6 +95,8 @@
       inset: 8pt,
       radius: 4pt,
     )[
+      #set align(left)
+      #set par(justify: true)
       #set enum(numbering: env-numbering)
       #text[*_#capitalize(cfg.title)#suffix.---_* ]
       #body
@@ -152,7 +154,9 @@
     supplement: [#capitalize(cfg.title)],
     numbering: env_figure_numbering(number, env-numbering),
     outlined: false,
-    block[
+    block(width: 100%)[
+      #set align(left)
+      #set par(justify: true)
       #set enum(numbering: env-numbering)
       #text[*_#capitalize(cfg.title)#suffix.---_* ]
       #body
