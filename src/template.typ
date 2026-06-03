@@ -1,56 +1,14 @@
 
 #import "./palette.typ": *
+#import "./settings.typ": *
 #import "./utils.typ": *
+#import "./counters.typ": *
+#import "./layout.typ": *
+#import "./refs.typ": *
 #import "./environments.typ": *
-
-
-// Typography
-// ----------------------------------------------------------------------------
-
-#let main_body_text_settings = (
-  font: "Noto Sans",
-  size: 8pt,
-  weight: body_weight,
-  tracking: 0.3pt,
-
-  /* Alts.
-  font: "Times New Roman",
-  size: 8pt,
-  weight: 100,
-  tracking: 0.6pt,
-  */
-
-  // font: "New Computer Modern",
-  // tracking: 0.2pt,
-  // size: 10pt,
-)
-
-#let raw_font_text_settings = (
-  font: "JetBrains Mono NL", // "JetBrainsMonoNL NL",
-  size: 8pt,
-  ligatures: false,
-  weight: 200,
-  features: (frac: 0, numr: 0, sups: 0, ordn: 0),
-)
-
-
-// Environment counters reset at each top-level section.
-#let section-counter-names = (
-  "definition", "axiom", "theorem", "proposition", "lemma",
-  "corollary", "example", "exercise", "problem",
-)
-
-#let reset-section-counters() = {
-  for name in section-counter-names {
-    counter(name).update(0)
-    counter(figure.where(kind: name)).update(0)
-  }
-}
-
-#let reset-figure-counters() = {
-  counter(figure.where(kind: image)).update(0)
-  counter(figure.where(kind: table)).update(0)
-}
+#import "./blocks.typ": *
+#import "./math.typ": *
+#import "./tables.typ": *
 
 
 // Template
@@ -78,47 +36,8 @@
     env_counter_reset_depth
   }
 
-  set figure(numbering: n => context {
-    let heading-numbers = counter(heading).get()
-    let chapter-number = if heading-numbers.len() >= chapter-depth {
-      heading-numbers.at(chapter-depth - 1)
-    } else {
-      1
-    }
-
-    str(chapter-number) + "." + str(n)
-  })
-
-  set page(
-    fill: palette.bg,
-    paper: if tablet { "a5" } else { sheet },
-    margin: if tablet { (x: 8pt, y: 8pt) } else { auto },
-    footer: none,
-    header: if tablet {
-      none
-    } else {
-      context {
-        let headings = query(selector(heading).before(here()))
-        if headings.len() == 0 {
-          return
-        }
-
-        let heading = headings.last()
-        let this_page = counter(page).display()
-
-        block[
-          #text(style: "italic")[
-            // TODO Solucionar el problema con esto.
-            // #counter(selector(heading).before(here())).display(heading.numbering)
-            ---
-            #heading.body
-            #h(1fr)
-            #this_page
-          ]
-        ]
-      }
-    },
-  )
+  set figure(numbering: figure-numbering(chapter-depth))
+  set page(..page-settings(sheet, tablet))
 
   set text(..main_body_text_settings)
   set text(fill: palette.fg)
@@ -162,31 +81,7 @@
 
   show figure.caption: set text(style: "italic")
 
-  show ref: it => {
-    let is-env-ref = it.form == "normal" and it.element != none and it.element.func() == figure and section-counter-names.contains(it.element.kind)
-    if is-env-ref {
-      context {
-        let loc = it.element.location()
-        let heading-numbers = counter(heading).at(loc)
-        let top-level-number = if heading-numbers.len() > 0 {
-          heading-numbers.first()
-        } else {
-          1
-        }
-
-        let env-numbers = counter(figure.where(kind: it.element.kind)).at(loc)
-        let env-number = if env-numbers.len() > 0 {
-          env-numbers.first()
-        } else {
-          1
-        }
-
-        link(it.target)[#it.element.supplement~#top-level-number.#env-number]
-      }
-    } else {
-      it
-    }
-  }
+  show ref: reference-rule
 
   set par(
     justify: true,
@@ -243,65 +138,11 @@
   // TODO Sigue mal. La centra.
   // show bibliography: set heading(level: 2)
 
-  // -- Title page --
-  set align(center + horizon)
-  text(weight: heading_weight, size: 18pt, title)
-
-  v(2em)
-
-  let ncols = calc.min(authors.len(), 3)
-  grid(
-    columns: (1fr,) * ncols,
-    row-gutter: 24pt,
-    ..authors.map(author => [#author.name \ #author.affiliation \ #link("mailto:" + author.email)]),
-  )
-
-  v(3em)
-
-  par(justify: false)[
-    *Abstract* \
-    #abstract
-  ]
-  // -- Title page --
-
-  pagebreak()
-  set align(left + top)
-  v(3cm)
-  outline(depth: outline_depth)
-  pagebreak()
+  title-page(title, authors, abstract)
+  outline-page(outline_depth)
 
   show outline: set heading(supplement: [Outline])
-  show heading: it => {
-    let section-depth = chapter-depth + 1
-    let subsection-depth = chapter-depth + 2
-
-    if it.level == reset-depth and it.supplement != [Outline] {
-      reset-section-counters()
-    }
-
-    if it.level == chapter-depth and it.supplement != [Outline] {
-      reset-figure-counters()
-    }
-
-    if it.level == 1 or (parts and it.level == chapter-depth) {
-      if it.supplement != [Outline] {
-        pagebreak(weak: true)
-      }
-      v(4cm)
-      it
-      v(1.3em)
-    } else if it.level == section-depth {
-      v(2cm)
-      it
-      v(1em)
-    } else if it.level == subsection-depth {
-      v(1.5em)
-      it
-      v(0.7em)
-    } else {
-      it
-    }
-  }
+  show heading: heading-layout(parts, chapter-depth, reset-depth)
 
   set footnote.entry(separator: line(
     length: 30% + 0pt,
@@ -310,49 +151,6 @@
 
   set par(justify: true)
   doc
-}
-
-
-#let norm(cuerpo) = {
-  set text(..main_body_text_settings)
-  show math.equation: set text(
-    font: "New Computer Modern Math",
-    size: 1.5em,
-  )
-  h(1.2em)
-  cuerpo
-}
-
-
-#let emptyset = sym.diameter
-
-
-#let func_sig(name, dom, codom, var, value) = [
-  $ & name  & : && dom & -->         && codom \
-    &       &   && var & mapsto.long && value $
-]
-
-// TODO Quizás sea mejor marcarlo como operador binario, en lugar de con
-// espacios fijos.
-#let iff = $#math.space #math.arrow.l.r.double.long #math.space$
-#let implies = $#math.space #math.arrow.r.double.long #math.space$
-
-
-// Highlight in a box.
-#let hl(it) = align(center)[#rect(stroke: 0.3pt + palette.fg)[#it]]
-
-
-#let table-header-cell(it) = {
-  set text(weight: "bold", style: "italic")
-  show math.equation: math.bold
-  it
-}
-
-#let tbl-standard-head = table-header-cell
-
-#let std_table(..items) = {
-  show table.cell.where(y: 0): table-header-cell
-  align(center)[#table(..items)]
 }
 
 
@@ -373,3 +171,5 @@
 // TODO Crear entorno de expresión alternativa en Lean de un resultado.
 // TODO Crear entorno de explicación de notación.
 // TODO Crear entorno de explicación de terminología.
+
+

@@ -8,6 +8,7 @@ authors = ["Carlos E. Tafur Egido"]
 license = "MIT"
 description = "Template for note taking maths."
 entrypoint = "src/template.typ"
+compiler = "0.14.0"
 
 
 
@@ -15,7 +16,6 @@ entrypoint = "src/template.typ"
 path = "."
 entrypoint = "src/template.typ"
 # thumbnail = "thumbnail.png"
-
 
 
 
