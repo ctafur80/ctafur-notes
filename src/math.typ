@@ -4,8 +4,13 @@
 #import "./settings.typ": *
 
 
-// Math font: New Computer Modern versión 8.1.0 (since Typst 0.15+)
+// Math font: New Computer Modern versión 8.1.0 (since Typst v0.15+)
 // show math.equation: set text(stylistic-set: 6)
+
+
+#let emptyset = sym.diameter
+// #let emptyset = sym.emptyset.zero // Since Typst v0.15+
+
 
 
 #let norm(cuerpo) = {
@@ -18,8 +23,6 @@
   cuerpo
 }
 
-
-#let emptyset = sym.diameter
 
 
 #let func_sig(name, dom, codom, var, value) = [
