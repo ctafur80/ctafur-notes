@@ -4,6 +4,10 @@
 #import "./settings.typ": *
 
 
+// Math font: New Computer Modern versión 8.1.0 (since Typst 0.15+)
+// show math.equation: set text(stylistic-set: 6)
+
+
 #let norm(cuerpo) = {
   set text(..main_body_text_settings)
   show math.equation: set text(
