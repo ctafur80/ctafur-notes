@@ -39,6 +39,18 @@
   set figure(numbering: figure-numbering(chapter-depth))
   set page(..page-settings(sheet, tablet))
 
+  // Figures are unbreakable blocks by default. The theorem-like environments
+  // are wrapped in figures (so they can be labeled and referenced), but they
+  // should still be allowed to break across pages.
+  show figure: it => {
+    if section-counter-names.contains(it.kind) {
+      set block(breakable: true)
+      it
+    } else {
+      it
+    }
+  }
+
   set text(..main_body_text_settings)
   set text(fill: palette.fg)
 

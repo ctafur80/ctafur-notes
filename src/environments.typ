@@ -1,6 +1,7 @@
 
 #import "./palette.typ": *
 #import "./utils.typ": *
+#import "./counters.typ": current-heading-number
 
 
 // Data for the different kinds of maths highlighted environments.
@@ -42,7 +43,7 @@
 // etc.
 
 
-// Generic maths highlighted environments function.
+// Numbering pattern that the wrapping figure exposes (for references).
 #let env_figure_numbering(number, numbering-pattern) = {
   if number == auto {
     numbering-pattern
@@ -55,15 +56,8 @@
 
 
 #let env_auto_number(kind, numbering-pattern) = context {
-  let heading-numbers = counter(heading).get()
-  let top-level-number = if heading-numbers.len() > 0 {
-    heading-numbers.first()
-  } else {
-    1
-  }
-
   let env-number = counter(figure.where(kind: kind)).display(numbering-pattern)
-  [#top-level-number.#env-number]
+  [#current-heading-number(1).#env-number]
 }
 
 
@@ -76,6 +70,16 @@
 }
 
 
+// Wraps an environment body in a labelable (referenceable) figure.
+#let env_figure(kind, cfg, number, env-numbering, inner) = figure(
+  kind: kind,
+  supplement: [#capitalize(cfg.title)],
+  numbering: env_figure_numbering(number, env-numbering),
+  outlined: false,
+  inner,
+)
+
+
 #let maths_hl_envs(kind, body, number: auto, title: none, numbering: none, bg: none) = {
   let cfg = maths_hl_envs_data.at(kind)
   let env-numbering = if numbering != none { numbering } else { cfg.numbering }
@@ -84,24 +88,18 @@
     title: title,
   )
 
-  figure(
-    kind: kind,
-    supplement: [#capitalize(cfg.title)],
-    numbering: env_figure_numbering(number, env-numbering),
-    outlined: false,
-    block(
-      width: 100%,
-      fill: if bg != none { bg } else { cfg.bg },
-      inset: 8pt,
-      radius: 4pt,
-    )[
-      #set align(left)
-      #set par(justify: true)
-      #set enum(numbering: env-numbering)
-      #text[*_#capitalize(cfg.title)#suffix.---_* ]
-      #body
-    ],
-  )
+  env_figure(kind, cfg, number, env-numbering, block(
+    width: 100%,
+    fill: if bg != none { bg } else { cfg.bg },
+    inset: 8pt,
+    radius: 4pt,
+  )[
+    #set align(left)
+    #set par(justify: true)
+    #set enum(numbering: env-numbering)
+    #text[*_#capitalize(cfg.title)#suffix.---_* ]
+    #body
+  ])
 }
 
 
@@ -149,20 +147,14 @@
   )
   let marker = if final_marker != none { final_marker } else { cfg.final_marker }
 
-  figure(
-    kind: kind,
-    supplement: [#capitalize(cfg.title)],
-    numbering: env_figure_numbering(number, env-numbering),
-    outlined: false,
-    block(width: 100%)[
-      #set align(left)
-      #set par(justify: true)
-      #set enum(numbering: env-numbering)
-      #text[*_#capitalize(cfg.title)#suffix.---_* ]
-      #body
-      #h(1fr) #marker
-    ],
-  )
+  env_figure(kind, cfg, number, env-numbering, block(width: 100%)[
+    #set align(left)
+    #set par(justify: true)
+    #set enum(numbering: env-numbering)
+    #text[*_#capitalize(cfg.title)#suffix.---_* ]
+    #body
+    #h(1fr) #marker
+  ])
 }
 
 

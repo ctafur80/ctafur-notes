@@ -15,11 +15,20 @@
   counter(figure.where(kind: table)).update(0)
 }
 
-#let current-heading-number(depth, fallback: 1) = {
-  let heading-numbers = counter(heading).get()
+#let heading-number-of(heading-numbers, depth, fallback) = {
   if heading-numbers.len() >= depth {
     heading-numbers.at(depth - 1)
   } else {
     fallback
   }
+}
+
+// Heading number at the current position (requires context).
+#let current-heading-number(depth, fallback: 1) = {
+  heading-number-of(counter(heading).get(), depth, fallback)
+}
+
+// Heading number at a given location.
+#let heading-number-at(loc, depth, fallback: 1) = {
+  heading-number-of(counter(heading).at(loc), depth, fallback)
 }

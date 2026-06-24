@@ -1,16 +1,12 @@
 // Reference rendering helpers.
 
 #import "./settings.typ": section-counter-names
+#import "./counters.typ": heading-number-at
 
 
 #let environment-ref(it) = context {
   let loc = it.element.location()
-  let heading-numbers = counter(heading).at(loc)
-  let top-level-number = if heading-numbers.len() > 0 {
-    heading-numbers.first()
-  } else {
-    1
-  }
+  let top-level-number = heading-number-at(loc, 1)
 
   let env-numbers = counter(figure.where(kind: it.element.kind)).at(loc)
   let env-number = if env-numbers.len() > 0 {
