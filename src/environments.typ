@@ -122,17 +122,17 @@
   example: (
     title: "ejemplo",
     numbering: "1",
-    final_marker: $triangle.filled.br$,
+    final_marker: $corner.r.b$,
   ),
   exercise: (
     title: "ejercicio",
     numbering: "1",
-    final_marker: $triangle.filled.br$,
+    final_marker: $corner.r.b$,
   ),
   problem: (
     title: "problema",
     numbering: "1",
-    final_marker: $triangle.filled.br$,
+    final_marker: $corner.r.b$,
   ),
 )
 
@@ -187,15 +187,15 @@
 
 
 #let remark(it) = {
-  block[#text[*_Observación_*. #it #h(1fr) $triangle.filled.br$]]
+  block[#text[*_Observación_*. #it #h(1fr) $corner.r.b$]]
 }
 
 #let remark_notat(it) = {
-  block[#text[*_Notación_*. #it#h(1fr)$triangle.filled.br$]]
+  block[#text[*_Notación_*. #it#h(1fr)$corner.r.b$]]
 }
 
 #let remark_term(it) = {
-  block[#text[*_Terminología_*. #it#h(1fr)$triangle.filled.br$]]
+  block[#text[*_Terminología_*. #it#h(1fr)$corner.r.b$]]
 }
 
 
