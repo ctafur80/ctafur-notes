@@ -78,8 +78,10 @@
   show heading.where(level: 4): set text(size: 8pt)
   show heading.where(level: 5): set text(size: 7pt)
 
-  // show math.equation: set text(size: 1.2em)
-  show math.equation: set text(size: 1.1em, font: "Lete Sans Math")
+  // show math.equation: set text(font: "New Computer Modern", size: 1.2em, weight: 500)
+  show math.equation: set text(size: 1.2em, weight: 500)
+  // show math.equation: set text(font: "New Computer Modern", weight: "regular")
+  // show math.equation: set text(size: 1.1em, font: "Lete Sans Math")
 
 
   // Code block background.

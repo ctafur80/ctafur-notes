@@ -7,9 +7,10 @@
 // ----------------------------------------------------------------------------
 
 #let main_body_text_settings = (
-  // font: "Noto Sans",
-  font: "Lato",
-  size: 8pt,
+  font: "Noto Sans",
+  // font: "Lato",
+  // font: "New Computer Modern",
+  size: 9pt,
   weight: body_weight,
   tracking: 0.3pt,
 
