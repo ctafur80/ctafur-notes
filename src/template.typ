@@ -11,6 +11,8 @@
 #import "./tables.typ": *
 
 
+
+
 // Template
 // ----------------------------------------------------------------------------
 #let templ(
@@ -68,10 +70,6 @@
   }
   */
 
-  // El problema con lo siguiente es que los números quiero dejarlos en CM.
-  // show math.text: set text(font: "Noto Sans", weight: 300, size: 7pt)
-  // Lo siguiente hace otra cosa parecida.
-  // show math.text: text.with(font: "Noto Sans")
 
   show heading: set text(weight: heading_weight)
   show heading.where(level: 1): set text(size: 14pt)
@@ -80,8 +78,9 @@
   show heading.where(level: 4): set text(size: 8pt)
   show heading.where(level: 5): set text(size: 7pt)
 
-  // show math.equation: set text(size: 1.2em, font: "New Computer Modern")
-  show math.equation: set text(size: 1.2em)
+  // show math.equation: set text(size: 1.2em)
+  show math.equation: set text(size: 1.1em, font: "Lete Sans Math")
+
 
   // Code block background.
   show raw.where(block: true): block.with(

@@ -23,7 +23,8 @@
 
 
 // Typography weights (body and headings).
-#let body_weight = 340
+// #let body_weight = 340
+#let body_weight = 400
 #let heading_weight = 400
 
 

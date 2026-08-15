@@ -8,7 +8,7 @@
 // show math.equation: set text(stylistic-set: 6)
 
 
-#let emptyset = sym.diameter
+// #let emptyset = sym.diameter
 // #let emptyset = sym.emptyset.zero // Since Typst v0.15+
 
 
