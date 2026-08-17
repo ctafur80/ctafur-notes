@@ -13,8 +13,8 @@
 #let dark_palette = (
   bg: rgb("1e1e1e"),
   fg: rgb("a89e9e"),
-  math_hl_env_bg: gradient.linear(rgb("2c2c3d"), rgb("3b3b30")),
-  ax_env_bg: gradient.linear(rgb("3d2c33"), rgb("3b3b30")),
+  math_hl_env_bg: gradient.linear(rgb("22222b"), rgb("262621")),
+  ax_env_bg: gradient.linear(rgb("261d20"), rgb("262621")),
 )
 
 
